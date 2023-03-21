@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.pp {
+    max-width: 150px;
+    max-height: 200px;
+    border-radius: 20px;
+}
+
+.pcard {
+    text-align: center;
+    line-height: .01;
+    margin-top: 20px;
+}
+
+.pcard--role{
+    font-size: 15px;
+    alignment: center;
+}
+
+.pcard-container{
+    width: fit-content;
+}
