@@ -1,7 +1,7 @@
 import React from "react";
 
 import './style.css'
-import Info from "./components/Info";
+import Info from "../AdminDashboard/components/Info";
 import LChart from "./components/LChart";
 import PChart from "./components/PChart";
 
@@ -83,7 +83,7 @@ let pchartData1 = [
 
 function SystemReport(){
     return(
-        <div className={"admin-page"}>
+        <div className={"report-page"}>
             <LChart
                 data={data}
                 title={"Number of new ads and bookings for the last year"}

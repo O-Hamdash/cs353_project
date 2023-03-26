@@ -10,7 +10,9 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <div>
+        <AdminDashboard />
         <SystemReport />
+        <Review />
     </div>
 );
 
