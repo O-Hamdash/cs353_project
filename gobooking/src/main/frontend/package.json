@@ -6,13 +6,20 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
-    "@mui/material": "^5.11.13",
+    "@mui/material": "^5.11.14",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-native": "^0.71.4",
+    "react-native-element-dropdown": "^2.9.0",
+    "react-native-web": "^0.18.12",
+    "react-rating-stars-component": "^2.2.0",
     "react-scripts": "^5.0.1",
+    "recharts": "^2.4.3",
+    "scroll-into-view": "^1.16.2",
     "web-vitals": "^3.1.1"
   },
   "scripts": {
@@ -38,5 +45,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
