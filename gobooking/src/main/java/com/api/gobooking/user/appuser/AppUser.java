@@ -1,5 +1,6 @@
 package com.api.gobooking.user.appuser;
 
+import com.api.gobooking.user.Role;
 import com.api.gobooking.user.User;
 import lombok.*;
 
@@ -25,7 +26,9 @@ public class AppUser extends User {
     private boolean isBannedFromBooking;
     private boolean isBannedFromPosting;
 
-    public AppUser(double balance, String city){
+    public AppUser(int id, String name, String surname, String email, LocalDateTime birthDate, double balance, String city){
+        super(id, name, surname, email, birthDate, Role.APP_USER);
+
         this.balance = balance;
         this.city = city;
         this.taxNumber = null;
