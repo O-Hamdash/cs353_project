@@ -37,11 +37,11 @@ public abstract class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    public User(Integer id, String name, String surname, String email, LocalDateTime birthDate, Role role) {
-        this.id = id;
+    public User(String name, String surname, String email, String password, LocalDateTime birthDate, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.password = password;
         this.password = null;
         this.birthDate = birthDate;
         this.role = role;
