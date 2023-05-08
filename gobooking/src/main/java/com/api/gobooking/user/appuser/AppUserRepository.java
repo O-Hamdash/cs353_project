@@ -73,10 +73,10 @@ public class AppUserRepository {
 
     public void updateAppUser(AppUser appUser){
         String sql = "UPDATE app_user a " +
-                "SET a.name = :name ," +
-                " a.surname = :surname ," +
-                " a.password = :password," +
-                " a.birth_date = :birthdate" +
+                "SET a.name = :name , " +
+                "a.surname = :surname , " +
+                "a.password = :password, " +
+                "a.birth_date = :birthdate " +
                 "WHERE a.id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
@@ -86,6 +86,32 @@ public class AppUserRepository {
         query.setParameter("surname", appUser.getSurname());
         query.setParameter("password", appUser.getPassword());
         query.setParameter("birthdate", appUser.getBirthDate());
+
+        query.executeUpdate();
+    }
+
+    public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
+        String sql = "UPDATE app_user a " +
+                "SET a.is_banned_from_booking = ;is_banned_from_booking " +
+                "WHERE a.id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("is_banned_from_booking", isBannedFromBooking);
+
+        query.executeUpdate();
+    }
+
+    public void setIsBannedFromPosting(Integer id, Boolean isBannedFromPosting){
+        String sql = "UPDATE app_user a " +
+                "SET a.is_banned_from_posting = ;is_banned_from_posting " +
+                "WHERE a.id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("is_banned_from_posting", isBannedFromPosting);
 
         query.executeUpdate();
     }

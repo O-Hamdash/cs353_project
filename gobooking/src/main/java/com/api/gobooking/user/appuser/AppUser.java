@@ -26,8 +26,8 @@ public class AppUser extends User {
     private Boolean isBannedFromBooking;
     private Boolean isBannedFromPosting;
 
-    public AppUser(Integer id, String name, String surname, String email, LocalDateTime birthDate, Double balance, String city){
-        super(id, name, surname, email, birthDate, Role.APP_USER);
+    public AppUser(String name, String surname, String email, String password, LocalDateTime birthDate, Double balance, String city){
+        super(name, surname, email, password, birthDate, Role.APP_USER);
 
         this.balance = balance;
         this.city = city;
@@ -39,10 +39,22 @@ public class AppUser extends User {
     }
 
     public AppUser(AppUser appUser){
-        super(appUser.getId(), appUser.getName(), appUser.getSurname(), appUser.getEmail(), appUser.getBirthDate(), Role.APP_USER);
+        super(appUser.getName(), appUser.getSurname(), appUser.getEmail(), appUser.getPassword(), appUser.getBirthDate(), Role.APP_USER);
 
         this.balance = appUser.getBalance();
         this.city = appUser.getCity();
+        this.taxNumber = null;
+        this.registrationDate = LocalDateTime.now();
+        this.isBlocked = false;
+        this.isBannedFromBooking = false;
+        this.isBannedFromPosting = false;
+    }
+
+    public AppUser(AppUserRequest appUserRequest){
+        super(appUserRequest.getName(), appUserRequest.getSurname(), appUserRequest.getEmail(), appUserRequest.getPassword(), appUserRequest.getBirthDate(), Role.APP_USER);
+
+        this.balance = appUserRequest.getBalance();
+        this.city = appUserRequest.getCity();
         this.taxNumber = null;
         this.registrationDate = LocalDateTime.now();
         this.isBlocked = false;
