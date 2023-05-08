@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 public abstract class User {
     @Id
     @Column(name = "user_id")
-    private int id;
+    private Integer id;
     private String name;
     private String surname;
     private String email;
@@ -37,7 +37,7 @@ public abstract class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    public User(int id, String name, String surname, String email, LocalDateTime birthDate, Role role) {
+    public User(Integer id, String name, String surname, String email, LocalDateTime birthDate, Role role) {
         this.id = id;
         this.name = name;
         this.surname = surname;

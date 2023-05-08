@@ -18,19 +18,31 @@ import java.time.LocalDateTime;
 //@Table
 @PrimaryKeyJoinColumn(name = "id")
 public class AppUser extends User {
-    private double balance;
+    private Double balance;
     private String city;
     private Integer taxNumber;
     private LocalDateTime registrationDate;
-    private boolean isBlocked;
-    private boolean isBannedFromBooking;
-    private boolean isBannedFromPosting;
+    private Boolean isBlocked;
+    private Boolean isBannedFromBooking;
+    private Boolean isBannedFromPosting;
 
-    public AppUser(int id, String name, String surname, String email, LocalDateTime birthDate, double balance, String city){
+    public AppUser(Integer id, String name, String surname, String email, LocalDateTime birthDate, Double balance, String city){
         super(id, name, surname, email, birthDate, Role.APP_USER);
 
         this.balance = balance;
         this.city = city;
+        this.taxNumber = null;
+        this.registrationDate = LocalDateTime.now();
+        this.isBlocked = false;
+        this.isBannedFromBooking = false;
+        this.isBannedFromPosting = false;
+    }
+
+    public AppUser(AppUser appUser){
+        super(appUser.getId(), appUser.getName(), appUser.getSurname(), appUser.getEmail(), appUser.getBirthDate(), Role.APP_USER);
+
+        this.balance = appUser.getBalance();
+        this.city = appUser.getCity();
         this.taxNumber = null;
         this.registrationDate = LocalDateTime.now();
         this.isBlocked = false;
