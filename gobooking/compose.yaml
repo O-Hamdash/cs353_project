@@ -9,6 +9,8 @@ services:
     networks:
       - react-spring
       - spring-postgres
+    depends_on:
+      - db
   db:
     image: postgres
     restart: always

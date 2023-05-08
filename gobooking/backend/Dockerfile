@@ -21,7 +21,7 @@ usermod -aG docker vscode
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
-CMD ["mvn", "spring-boot:run"]
+CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.profiles=postgres"]
 
 FROM builder as prepare-production
 RUN mkdir -p target/dependency
