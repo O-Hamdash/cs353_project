@@ -72,7 +72,22 @@ public class AppUserRepository {
     }
 
     public void updateAppUser(AppUser appUser){
-        // TODO: write SQL
+        String sql = "UPDATE app_user a " +
+                "SET a.name = :name ," +
+                " a.surname = :surname ," +
+                " a.password = :password," +
+                " a.birth_date = :birthdate" +
+                "WHERE a.id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", appUser.getId());
+        query.setParameter("name", appUser.getName());
+        query.setParameter("surname", appUser.getSurname());
+        query.setParameter("password", appUser.getPassword());
+        query.setParameter("birthdate", appUser.getBirthDate());
+
+        query.executeUpdate();
     }
 
     public void deleteById(Integer id) {
