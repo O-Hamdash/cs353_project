@@ -23,22 +23,22 @@ public class AppUserRepository {
 
         String sql = "INSERT INTO " +
                 "app_user (name, surname, email, birth_date, role, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (:name, :surname, :email, :birthdate, :role, :balance, :city, :tax_number, :registration_date, :is_blocked, :is_banned_from_booking, :is_banned_from_posting)";
 
         Query query = entityManager.createNativeQuery(sql);
 
-        query.setParameter(1, appUser.getName());
-        query.setParameter(2, appUser.getSurname());
-        query.setParameter(3, appUser.getEmail());
-        query.setParameter(4, appUser.getBirthDate());
-        query.setParameter(5, appUser.getRole());
-        query.setParameter(6, appUser.getBalance());
-        query.setParameter(7, appUser.getCity());
-        query.setParameter(8, appUser.getTaxNumber());
-        query.setParameter(9, appUser.getRegistrationDate());
-        query.setParameter(10, appUser.getIsBlocked());
-        query.setParameter(11, appUser.getIsBannedFromBooking());
-        query.setParameter(12, appUser.getIsBannedFromPosting());
+        query.setParameter("name", appUser.getName());
+        query.setParameter("surname", appUser.getSurname());
+        query.setParameter("email", appUser.getEmail());
+        query.setParameter("birthdate", appUser.getBirthDate());
+        query.setParameter("role", appUser.getRole());
+        query.setParameter("balance", appUser.getBalance());
+        query.setParameter("city", appUser.getCity());
+        query.setParameter("tax_number", appUser.getTaxNumber());
+        query.setParameter("registration_date", appUser.getRegistrationDate());
+        query.setParameter("is_blocked", appUser.getIsBlocked());
+        query.setParameter("is_banned_from_booking", appUser.getIsBannedFromBooking());
+        query.setParameter("is_banned_from_posting", appUser.getIsBannedFromPosting());
 
         query.executeUpdate();
 
@@ -46,20 +46,20 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findById(Integer id){
-        String sql = "SELECT a from app_user a WHERE a.id = ?";
+        String sql = "SELECT a from app_user a WHERE a.id = :id";
         Query query = entityManager.createNativeQuery(sql);
 
-        query.setParameter(1, id);
+        query.setParameter("id", id);
 
         List<AppUser> resultList = query.getResultList();
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 
     public Optional<AppUser> findByEmail(String email){
-        String sql = "SELECT a from app_user a WHERE a.email = ?";
+        String sql = "SELECT a from app_user a WHERE a.email = :email";
         Query query = entityManager.createNativeQuery(sql);
 
-        query.setParameter(1, email);
+        query.setParameter("email", email);
 
         List<AppUser> resultList = query.getResultList();
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
