@@ -21,7 +21,7 @@ public class AppUserController {
     }
 
     @GetMapping(path = "{appUserId}")
-    public Optional<AppUser> getAppUser(@PathVariable("appUserId") Integer appUserId){
+    public AppUser getAppUser(@PathVariable("appUserId") Integer appUserId){
         return appUserService.getAppUser(appUserId);
     }
 

@@ -20,7 +20,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "{adminId}")
-    public Optional<Admin> getAdmin(@PathVariable("adminId") Integer adminId){
+    public Admin getAdmin(@PathVariable("adminId") Integer adminId){
         return adminService.getAdmin(adminId);
     }
 

@@ -40,8 +40,7 @@ public class UserService {
     }
 
     public String encodePassword(String password){
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
-        return encodedPassword;
+        return bCryptPasswordEncoder.encode(password);
     }
 
     public boolean passwordMatches(String rawPassword, String encodedPassword){

@@ -1,5 +1,6 @@
 package com.api.gobooking.user.appuser;
 
+import com.api.gobooking.user.admin.Admin;
 import com.api.gobooking.user.admin.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,14 @@ public class AppUserService {
         return appUserRepository.findAll();
     }
 
-    public Optional<AppUser> getAppUser(Integer id){
-        return appUserRepository.findById(id);
+    public AppUser getAppUser(Integer id){
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
+
+        if (optionalAppUser.isEmpty()){
+            throw new IllegalStateException(String.format("getAppUser: AppUser with id (%s) does not exist", id));
+        }
+
+        return optionalAppUser.get();
     }
 
     public boolean addAppUser(AppUserRequest appUserRequest){
@@ -42,7 +49,7 @@ public class AppUserService {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
         if (optionalAppUser.isEmpty()){
-            throw new IllegalStateException(String.format("deleteAppUser: AppUser with id (%d) does not exist", id));
+            throw new IllegalStateException(String.format("deleteAppUser: AppUser with id (%s) does not exist", id));
         }
 
         appUserRepository.deleteById(id);
@@ -54,7 +61,7 @@ public class AppUserService {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
         if (optionalAppUser.isEmpty()){
-            throw new IllegalStateException(String.format("updateAppUser: AppUser with id (%d) does not exist", id));
+            throw new IllegalStateException(String.format("updateAppUser: AppUser with id (%s) does not exist", id));
         }
 
         AppUser appUser = optionalAppUser.get();
@@ -81,7 +88,7 @@ public class AppUserService {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
         if (optionalAppUser.isEmpty()){
-            throw new IllegalStateException(String.format("setIsBannedFromBooking: AppUser with id (%d) does not exist", id));
+            throw new IllegalStateException(String.format("setIsBannedFromBooking: AppUser with id (%s) does not exist", id));
         }
 
         appUserRepository.setIsBannedFromBooking(id, isBannedFromBooking);
@@ -93,7 +100,7 @@ public class AppUserService {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
         if (optionalAppUser.isEmpty()){
-            throw new IllegalStateException(String.format("setIsBannedFromPosting: AppUser with id (%d) does not exist", id));
+            throw new IllegalStateException(String.format("setIsBannedFromPosting: AppUser with id (%s) does not exist", id));
         }
 
         appUserRepository.setIsBannedFromPosting(id, isBannedFromPosting);

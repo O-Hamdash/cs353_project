@@ -19,8 +19,14 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public Optional<Admin> getAdmin(Integer id){
-        return adminRepository.findById(id);
+    public Admin getAdmin(Integer id){
+        Optional<Admin> optionalAdmin = adminRepository.findById(id);
+
+        if (optionalAdmin.isEmpty()){
+            throw new IllegalStateException(String.format("getAdmin: Admin with id (%s) does not exist", id));
+        }
+
+        return optionalAdmin.get();
     }
 
     public boolean addAdmin(AdminRequest adminRequest){
@@ -42,7 +48,7 @@ public class AdminService {
         Optional<Admin> optionalAdmin = adminRepository.findById(id);
 
         if (optionalAdmin.isEmpty()){
-            throw new IllegalStateException(String.format("deleteAdmin: Admin with id (%d) does not exist", id));
+            throw new IllegalStateException(String.format("deleteAdmin: Admin with id (%s) does not exist", id));
         }
 
         adminRepository.deleteById(id);
@@ -54,7 +60,7 @@ public class AdminService {
         Optional<Admin> optionalAdmin = adminRepository.findById(id);
 
         if (optionalAdmin.isEmpty()){
-            throw new IllegalStateException(String.format("updateAdmin: Admin with id (%d) does not exist", id));
+            throw new IllegalStateException(String.format("updateAdmin: Admin with id (%s) does not exist", id));
         }
 
         Admin admin = optionalAdmin.get();
