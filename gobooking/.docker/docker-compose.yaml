@@ -19,7 +19,7 @@ services:
     secrets:
       - db-password
     volumes:
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - db-data:/var/lib/postgresql/new-directory
     networks:
       - spring-postgres
     environment:
@@ -45,6 +45,8 @@ services:
 secrets:
   db-password:
     file: db/password.txt
+volumes:
+  db-data:
 networks:
   react-spring: {}
   spring-postgres: {}
