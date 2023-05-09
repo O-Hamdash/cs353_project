@@ -7,7 +7,7 @@ COPY package.json /code/package.json
 COPY package-lock.json /code/package-lock.json
 
 RUN npm ci
-COPY ../../../dockerize%20trial /code
+COPY . /code
 
 ENV CI=true
 ENV PORT=3000
