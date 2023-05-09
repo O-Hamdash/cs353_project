@@ -94,7 +94,7 @@ public class AppUserRepository {
 
     public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
         String sql = "UPDATE app_user a " +
-                "SET a.is_banned_from_booking = ;is_banned_from_booking " +
+                "SET a.is_banned_from_booking = :is_banned_from_booking " +
                 "WHERE a.id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
@@ -107,7 +107,7 @@ public class AppUserRepository {
 
     public void setIsBannedFromPosting(Integer id, Boolean isBannedFromPosting){
         String sql = "UPDATE app_user a " +
-                "SET a.is_banned_from_posting = ;is_banned_from_posting " +
+                "SET a.is_banned_from_posting = :is_banned_from_posting " +
                 "WHERE a.id = :id";
 
         Query query = entityManager.createNativeQuery(sql);

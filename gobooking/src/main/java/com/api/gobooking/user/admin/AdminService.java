@@ -1,7 +1,6 @@
 package com.api.gobooking.user.admin;
 
-import com.api.gobooking.user.appuser.AppUser;
-import com.api.gobooking.user.appuser.AppUserRequest;
+import com.api.gobooking.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

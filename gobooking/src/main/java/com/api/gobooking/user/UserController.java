@@ -1,6 +1,5 @@
 package com.api.gobooking.user;
 
-import com.api.gobooking.user.admin.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

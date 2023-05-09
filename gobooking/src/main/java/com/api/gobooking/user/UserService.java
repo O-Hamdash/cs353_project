@@ -1,4 +1,4 @@
-package com.api.gobooking.user.admin;
+package com.api.gobooking.user;
 
 import com.api.gobooking.user.User;
 import com.api.gobooking.user.UserRepository;
