@@ -21,27 +21,42 @@ public class AppUserRepository {
     private EntityManager entityManager;
     public boolean save(AppUser appUser){
 
-        String sql = "INSERT INTO " +
-                "app_user (name, surname, email, birth_date, role, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
-                "VALUES (:name, :surname, :email, :birthdate, :role, :balance, :city, :tax_number, :registration_date, :is_blocked, :is_banned_from_booking, :is_banned_from_posting)";
+        String userSql = "INSERT INTO " +
+                "user (name, surname, email, birth_date, role) " +
+                "VALUES (:name, :surname, :email, :birthdate, :role)";
 
-        Query query = entityManager.createNativeQuery(sql);
+        Query userQuery = entityManager.createNativeQuery(userSql);
 
-        query.setParameter("name", appUser.getName());
-        query.setParameter("surname", appUser.getSurname());
-        query.setParameter("email", appUser.getEmail());
-        query.setParameter("birthdate", appUser.getBirthDate());
-        query.setParameter("role", appUser.getRole());
-        query.setParameter("balance", appUser.getBalance());
-        query.setParameter("city", appUser.getCity());
-        query.setParameter("tax_number", appUser.getTaxNumber());
-        query.setParameter("registration_date", appUser.getRegistrationDate());
-        query.setParameter("is_blocked", appUser.getIsBlocked());
-        query.setParameter("is_banned_from_booking", appUser.getIsBannedFromBooking());
-        query.setParameter("is_banned_from_posting", appUser.getIsBannedFromPosting());
+        userQuery.setParameter("name", appUser.getName());
+        userQuery.setParameter("surname", appUser.getSurname());
+        userQuery.setParameter("email", appUser.getEmail());
+        userQuery.setParameter("birthdate", appUser.getBirthDate());
+        userQuery.setParameter("role", appUser.getRole());
 
-        query.executeUpdate();
+        userQuery.executeUpdate();
 
+        // Get the automatically generated user id
+        String lastInsertIdSql = "SELECT LAST_INSERT_ID()";
+        Query lastInsertIdQuery = entityManager.createNativeQuery(lastInsertIdSql);
+        int userId = ((Number) lastInsertIdQuery.getSingleResult()).intValue();
+
+
+        String appUserSql = "INSERT INTO " +
+                "app_user (id, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
+                "VALUES (:id, :balance, :city, :tax_number, :registration_date, :is_blocked, :is_banned_from_booking, :is_banned_from_posting)";
+
+        Query appUserQuery = entityManager.createNativeQuery(appUserSql);
+
+        appUserQuery.setParameter("id", userId);
+        appUserQuery.setParameter("balance", appUser.getBalance());
+        appUserQuery.setParameter("city", appUser.getCity());
+        appUserQuery.setParameter("tax_number", appUser.getTaxNumber());
+        appUserQuery.setParameter("registration_date", appUser.getRegistrationDate());
+        appUserQuery.setParameter("is_blocked", appUser.getIsBlocked());
+        appUserQuery.setParameter("is_banned_from_booking", appUser.getIsBannedFromBooking());
+        appUserQuery.setParameter("is_banned_from_posting", appUser.getIsBannedFromPosting());
+
+        appUserQuery.executeUpdate();
         return true;
     }
 
@@ -72,22 +87,17 @@ public class AppUserRepository {
     }
 
     public void updateAppUser(AppUser appUser){
-        String sql = "UPDATE app_user a " +
-                "SET a.name = :name , " +
-                "a.surname = :surname , " +
-                "a.password = :password, " +
-                "a.birth_date = :birthdate " +
-                "WHERE a.id = :id";
+        String updateUserSql = "UPDATE user " +
+                "SET name = :name, surname = :surname, password = :password, birthdate = :birthdate " +
+                "WHERE user_id = :id";
+        Query updateUserQuery = entityManager.createNativeQuery(updateUserSql);
+        updateUserQuery.setParameter("name", appUser.getName());
+        updateUserQuery.setParameter("surname", appUser.getSurname());
+        updateUserQuery.setParameter("password", appUser.getPassword());
+        updateUserQuery.setParameter("birthdate", appUser.getBirthDate());
+        updateUserQuery.setParameter("id", appUser.getId());
 
-        Query query = entityManager.createNativeQuery(sql);
-
-        query.setParameter("id", appUser.getId());
-        query.setParameter("name", appUser.getName());
-        query.setParameter("surname", appUser.getSurname());
-        query.setParameter("password", appUser.getPassword());
-        query.setParameter("birthdate", appUser.getBirthDate());
-
-        query.executeUpdate();
+        updateUserQuery.executeUpdate();
     }
 
     public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
@@ -117,7 +127,7 @@ public class AppUserRepository {
     }
 
     public void deleteById(Integer id) {
-        String sql = "DELETE FROM app_user WHERE id = :id";
+        String sql = "DELETE FROM user WHERE id = :id";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("id", id);
         query.executeUpdate();
