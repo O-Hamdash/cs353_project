@@ -24,9 +24,15 @@ public class Admin extends User {
     @Enumerated(value = EnumType.STRING)
     private AdminRole adminRole;
 
-    public Admin(int id, String name, String surname, String email, LocalDateTime birthDate, AdminRole adminRole){
-        super(id, name, surname, email, birthDate, Role.ADMIN);
+    public Admin(String name, String surname, String email, String password, LocalDateTime birthDate, AdminRole adminRole){
+        super(name, surname, email, password, birthDate, Role.ADMIN);
 
         this.adminRole = adminRole;
+    }
+
+    public Admin(AdminRequest adminRequest) {
+        super(adminRequest.getName(), adminRequest.getSurname(), adminRequest.getEmail(), adminRequest.getPassword(), adminRequest.getBirthDate(), Role.ADMIN);
+
+        this.adminRole = adminRequest.getAdminRole();
     }
 }
