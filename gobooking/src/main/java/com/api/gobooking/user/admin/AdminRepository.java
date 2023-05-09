@@ -1,5 +1,6 @@
 package com.api.gobooking.user.admin;
 
+import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.appuser.AppUser;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class AdminRepository {
     @PersistenceContext
     private EntityManager entityManager;
+    private UserRepository userRepository;
     public boolean save(Admin admin){
         String userSql = "INSERT INTO " +
                 "user (name, surname, email, birth_date, role) " +
@@ -75,18 +77,7 @@ public class AdminRepository {
     }
 
     public void updateAdmin(Admin admin){
-        String updateUserSql = "UPDATE user " +
-                "SET name = :name, surname = :surname, password = :password, birthdate = :birthdate " +
-                "WHERE user_id = :id";
-        Query updateUserQuery = entityManager.createNativeQuery(updateUserSql);
-        updateUserQuery.setParameter("name", admin.getName());
-        updateUserQuery.setParameter("surname", admin.getSurname());
-        updateUserQuery.setParameter("password", admin.getPassword());
-        updateUserQuery.setParameter("birthdate", admin.getBirthDate());
-        updateUserQuery.setParameter("id", admin.getId());
-
-        updateUserQuery.executeUpdate();
-
+        userRepository.updateUser(admin);
 
         String updateAdminSql = "UPDATE admin SET admin_role = :admin_role WHERE user_id = :id";
         Query updateAdminQuery = entityManager.createNativeQuery(updateAdminSql);
@@ -97,9 +88,6 @@ public class AdminRepository {
     }
 
     public void deleteById(Integer id) {
-        String sql = "DELETE FROM user WHERE id = :id";
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("id", id);
-        query.executeUpdate();
+        userRepository.deleteById(id);
     }
 }

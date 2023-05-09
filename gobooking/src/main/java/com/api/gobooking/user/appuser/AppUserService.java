@@ -1,5 +1,6 @@
 package com.api.gobooking.user.appuser;
 
+import com.api.gobooking.user.admin.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 @Service
 public class AppUserService {
     private final AppUserRepository appUserRepository;
+    private final UserService userService;
 
     public List<AppUser> getAppUsers(){
         return appUserRepository.findAll();
@@ -27,7 +29,9 @@ public class AppUserService {
             throw new IllegalStateException(String.format("addAppUser: AppUser with email (%s) already exists", appUserRequest.getEmail()));
         }
 
+        appUserRequest.setPassword(userService.encodePassword(appUserRequest.getPassword()));
         AppUser appUser = new AppUser(appUserRequest);
+
 
         appUserRepository.save(appUser);
 
@@ -62,7 +66,7 @@ public class AppUserService {
             appUser.setSurname(surname);
         }
         if (password != null){
-            appUser.setPassword(password);
+            appUser.setPassword(userService.encodePassword(password));
         }
         if (birthDate != null){
             appUser.setBirthDate(birthDate);

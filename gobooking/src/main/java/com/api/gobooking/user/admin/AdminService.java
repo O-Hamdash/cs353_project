@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 public class AdminService {
     private final AdminRepository adminRepository;
+    private final UserService userService;
 
     public List<Admin> getAdmins(){
         return adminRepository.findAll();
@@ -29,6 +30,7 @@ public class AdminService {
             throw new IllegalStateException(String.format("addAdmin: Admin with email (%s) already exists", adminRequest.getEmail()));
         }
 
+        adminRequest.setPassword(userService.encodePassword(adminRequest.getPassword()));
         Admin admin = new Admin(adminRequest);
 
         adminRepository.save(admin);
@@ -64,7 +66,7 @@ public class AdminService {
             admin.setSurname(surname);
         }
         if (password != null){
-            admin.setPassword(password);
+            admin.setPassword(userService.encodePassword(password));
         }
         if (birthDate != null){
             admin.setBirthDate(birthDate);

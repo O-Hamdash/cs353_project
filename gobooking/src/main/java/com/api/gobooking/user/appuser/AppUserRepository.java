@@ -1,6 +1,7 @@
 package com.api.gobooking.user.appuser;
 
 
+import com.api.gobooking.user.UserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ public class AppUserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+    private UserRepository userRepository;
     public boolean save(AppUser appUser){
 
         String userSql = "INSERT INTO " +
@@ -87,17 +89,7 @@ public class AppUserRepository {
     }
 
     public void updateAppUser(AppUser appUser){
-        String updateUserSql = "UPDATE user " +
-                "SET name = :name, surname = :surname, password = :password, birthdate = :birthdate " +
-                "WHERE user_id = :id";
-        Query updateUserQuery = entityManager.createNativeQuery(updateUserSql);
-        updateUserQuery.setParameter("name", appUser.getName());
-        updateUserQuery.setParameter("surname", appUser.getSurname());
-        updateUserQuery.setParameter("password", appUser.getPassword());
-        updateUserQuery.setParameter("birthdate", appUser.getBirthDate());
-        updateUserQuery.setParameter("id", appUser.getId());
-
-        updateUserQuery.executeUpdate();
+        userRepository.updateUser(appUser);
     }
 
     public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
@@ -127,10 +119,7 @@ public class AppUserRepository {
     }
 
     public void deleteById(Integer id) {
-        String sql = "DELETE FROM user WHERE id = :id";
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("id", id);
-        query.executeUpdate();
+        userRepository.deleteById(id);
     }
 
 }
