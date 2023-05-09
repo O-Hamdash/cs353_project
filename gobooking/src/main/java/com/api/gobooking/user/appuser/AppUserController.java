@@ -26,7 +26,7 @@ public class AppUserController {
     }
 
     @PostMapping
-    public void addNewUser(@RequestBody AppUserRequest appUserRequest){
+    public void addNewAppUser(@RequestBody AppUserRequest appUserRequest){
         appUserService.addAppUser(appUserRequest);
     }
 
