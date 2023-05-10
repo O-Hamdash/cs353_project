@@ -2,12 +2,13 @@ package com.api.gobooking.user.admin;
 
 import com.api.gobooking.user.Role;
 import com.api.gobooking.user.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.PrimaryKeyJoinColumn;
+
 import java.time.LocalDateTime;
 
 @Getter

@@ -2,15 +2,15 @@ package com.api.gobooking.user.appuser;
 
 
 import com.api.gobooking.user.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 //import org.springframework.data.jpa.repository.Query;
-import javax.persistence.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +83,7 @@ public class AppUserRepository {
     }
 
     public List<AppUser> findAll() {
-        String sql = "SELECT * FROM app_user";
+        String sql = "SELECT * FROM app_user natural join \"user\"";
         Query query = entityManager.createNativeQuery(sql, AppUser.class);
         return query.getResultList();
     }
