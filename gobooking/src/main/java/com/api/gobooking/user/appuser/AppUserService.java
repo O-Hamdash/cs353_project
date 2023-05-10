@@ -83,6 +83,18 @@ public class AppUserService {
         return true;
     }
 
+    public boolean setIsBlocked(Integer id, Boolean isBlocked){
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
+
+        if (optionalAppUser.isEmpty()){
+            throw new IllegalStateException(String.format("setIsBlocked: AppUser with id (%s) does not exist", id));
+        }
+
+        appUserRepository.setIsBlocked(id, isBlocked);
+
+        return true;
+    }
+
     public boolean setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
@@ -103,6 +115,30 @@ public class AppUserService {
         }
 
         appUserRepository.setIsBannedFromPosting(id, isBannedFromPosting);
+
+        return true;
+    }
+
+    public boolean updateBalance(Integer id, Double balance){
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
+
+        if (optionalAppUser.isEmpty()){
+            throw new IllegalStateException(String.format("updateBalance: AppUser with id (%s) does not exist", id));
+        }
+
+        appUserRepository.updateBalance(id, balance);
+
+        return true;
+    }
+
+    public boolean updateCity(Integer id, String city){
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
+
+        if (optionalAppUser.isEmpty()){
+            throw new IllegalStateException(String.format("updateCity: AppUser with id (%s) does not exist", id));
+        }
+
+        appUserRepository.updateCity(id, city);
 
         return true;
     }

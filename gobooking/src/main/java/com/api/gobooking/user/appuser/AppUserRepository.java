@@ -92,6 +92,19 @@ public class AppUserRepository {
         userRepository.updateUser(appUser);
     }
 
+    public void setIsBlocked(Integer id, Boolean isBlocked){
+        String sql = "UPDATE app_user a " +
+                "SET a.is_blocked = :is_blocked " +
+                "WHERE a.id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("is_blocked", isBlocked);
+
+        query.executeUpdate();
+    }
+
     public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
         String sql = "UPDATE app_user a " +
                 "SET a.is_banned_from_booking = :is_banned_from_booking " +
@@ -114,6 +127,32 @@ public class AppUserRepository {
 
         query.setParameter("id", id);
         query.setParameter("is_banned_from_posting", isBannedFromPosting);
+
+        query.executeUpdate();
+    }
+
+    public void updateBalance(Integer id, Double balance){
+        String sql = "UPDATE app_user a " +
+                "SET a.balance = :balance " +
+                "WHERE a.id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("balance", balance);
+
+        query.executeUpdate();
+    }
+
+    public void updateCity(Integer id, String city){
+        String sql = "UPDATE app_user a " +
+                "SET a.city = :city " +
+                "WHERE a.id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("city", city);
 
         query.executeUpdate();
     }

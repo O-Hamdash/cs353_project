@@ -46,6 +46,11 @@ public class AppUserController {
         appUserService.updateAppUser(appUserId, name, surname, password, birthDate);
     }
 
+    @PutMapping(path = "set_is_blocked/{appUserId}")
+    public void setIsBlocked(@PathVariable("appUserId") Integer appUserId, @RequestParam Boolean isBlocked){
+        appUserService.setIsBlocked(appUserId, isBlocked);
+    }
+
     @PutMapping(path = "set_is_banned_from_booking/{appUserId}")
     public void setIsBannedFromBooking(@PathVariable("appUserId") Integer appUserId, @RequestParam Boolean isBannedFromBooking){
         appUserService.setIsBannedFromBooking(appUserId, isBannedFromBooking);
@@ -54,5 +59,15 @@ public class AppUserController {
     @PutMapping(path = "set_is_banned_from_posting/{appUserId}")
     public void setIsBannedFromPosting(@PathVariable("appUserId") Integer appUserId, @RequestParam Boolean isBannedFromPosting){
         appUserService.setIsBannedFromPosting(appUserId, isBannedFromPosting);
+    }
+
+    @PutMapping(path = "update_balance/{appUserId}")
+    public void updateBalance(@PathVariable("appUserId") Integer appUserId, @RequestParam Double balance){
+        appUserService.updateBalance(appUserId, balance);
+    }
+
+    @PutMapping(path = "update_city/{appUserId}")
+    public void updateCity(@PathVariable("appUserId") Integer appUserId, @RequestParam String city){
+        appUserService.updateCity(appUserId, city);
     }
 }
