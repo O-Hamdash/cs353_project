@@ -13,9 +13,9 @@ CREATE TABLE "User"
 (
     user_id   SERIAL PRIMARY KEY NOT NULL,
     email     varchar(255)       NOT NULL,
-    name      varchar(255)       NOT NULL,
+    "name"      varchar(255)       NOT NULL,
     surname   varchar(255)       NOT NULL,
-    password  varchar(255)       NOT NULL,
+    "password"  varchar(255)       NOT NULL,
     birthdate TIMESTAMP          NOT NULL
 );
 
@@ -158,7 +158,7 @@ CREATE TABLE Pays
 (
     booking_id   int      NOT NULL,
     payment_date TIMESTAMP NOT NULL,
-    cost         float    NOT NULL,
+    "cost"         float    NOT NULL,
     PRIMARY KEY (booking_id),
     FOREIGN KEY (booking_id) REFERENCES Booking (booking_id)
         ON DELETE CASCADE
