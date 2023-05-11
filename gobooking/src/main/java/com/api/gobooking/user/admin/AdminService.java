@@ -4,6 +4,7 @@ import com.api.gobooking.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public class AdminService {
         return true;
     }
 
-    public boolean updateAdmin(Integer id, String name, String surname, String password, LocalDateTime birthDate, AdminRole adminRole){
+    public boolean updateAdmin(Integer id, String name, String surname, String password, Timestamp birthDate, AdminRole adminRole){
         Optional<Admin> optionalAdmin = adminRepository.findById(id);
 
         if (optionalAdmin.isEmpty()){

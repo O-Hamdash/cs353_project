@@ -4,9 +4,12 @@ import com.api.gobooking.user.Role;
 import com.api.gobooking.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import lombok.*;
 
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,26 +17,25 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
-//@Entity
-
-//@Table
+@Entity
+@Table(name = "app_user")
 //@PrimaryKeyJoinColumn(name = "id")
 public class AppUser extends User {
     private Double balance;
     private String city;
     private Integer taxNumber;
-    private LocalDateTime registrationDate;
+    private Timestamp registrationDate;
     private Boolean isBlocked;
     private Boolean isBannedFromBooking;
     private Boolean isBannedFromPosting;
 
-    public AppUser(String name, String surname, String email, String password, LocalDateTime birthDate, Double balance, String city){
+    public AppUser(String name, String surname, String email, String password, Timestamp birthDate, Double balance, String city){
         super(name, surname, email, password, birthDate, Role.APP_USER);
 
         this.balance = balance;
         this.city = city;
         this.taxNumber = null;
-        this.registrationDate = LocalDateTime.now();
+        this.registrationDate = Timestamp.from(Instant.now());
         this.isBlocked = false;
         this.isBannedFromBooking = false;
         this.isBannedFromPosting = false;
@@ -45,7 +47,7 @@ public class AppUser extends User {
         this.balance = appUser.getBalance();
         this.city = appUser.getCity();
         this.taxNumber = null;
-        this.registrationDate = LocalDateTime.now();
+        this.registrationDate = Timestamp.from(Instant.now());
         this.isBlocked = false;
         this.isBannedFromBooking = false;
         this.isBannedFromPosting = false;
@@ -57,7 +59,7 @@ public class AppUser extends User {
         this.balance = appUserRequest.getBalance();
         this.city = appUserRequest.getCity();
         this.taxNumber = null;
-        this.registrationDate = LocalDateTime.now();
+        this.registrationDate = Timestamp.from(Instant.now());
         this.isBlocked = false;
         this.isBannedFromBooking = false;
         this.isBannedFromPosting = false;

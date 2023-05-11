@@ -6,6 +6,7 @@ import com.api.gobooking.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class AppUserService {
     }
 
     public boolean addAppUser(AppUserRequest appUserRequest){
+
         Optional<User> optionalAppUser = userRepository.findByEmail(appUserRequest.getEmail());
 
         if (optionalAppUser.isPresent()){
@@ -59,7 +61,7 @@ public class AppUserService {
         return true;
     }
 
-    public boolean updateAppUser(Integer id, String name, String surname, String password, LocalDateTime birthDate){
+    public boolean updateAppUser(Integer id, String name, String surname, String password, Timestamp birthDate){
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
         if (optionalAppUser.isEmpty()){

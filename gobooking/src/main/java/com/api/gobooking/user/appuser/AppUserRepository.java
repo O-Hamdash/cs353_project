@@ -1,10 +1,13 @@
 package com.api.gobooking.user.appuser;
 
 
+import com.api.gobooking.user.User;
+import com.api.gobooking.user.appuser.AppUser;
 import com.api.gobooking.user.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -41,11 +44,16 @@ public class AppUserRepository {
 
         userQuery.executeUpdate();
 
+        /*
         // Get the automatically generated user id
         String lastInsertIdSql = "SELECT LAST_INSERT_ID()";
         Query lastInsertIdQuery = entityManager.createNativeQuery(lastInsertIdSql);
         int userId = ((Number) lastInsertIdQuery.getSingleResult()).intValue();
 
+         */
+
+        User user = userRepository.findByEmail(appUser.getEmail()).get();
+        int userId = user.getId();
 
         String appUserSql = "INSERT INTO " +
                 "app_user (id, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
@@ -63,6 +71,7 @@ public class AppUserRepository {
         appUserQuery.setParameter("is_banned_from_posting", appUser.getIsBannedFromPosting());
 
         appUserQuery.executeUpdate();
+
         return true;
     }
 
@@ -77,8 +86,8 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findByEmail(String email){
-        String sql = "SELECT a from app_user a WHERE a.email = :email";
-        Query query = entityManager.createNativeQuery(sql);
+        String jpql = "SELECT u from User u, AppUser a WHERE u.id = a.id AND u.email = :email";
+        TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
 
         query.setParameter("email", email);
 

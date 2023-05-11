@@ -3,6 +3,7 @@ package com.api.gobooking.user.admin;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class AdminController {
                              @RequestParam(required = false) String name,
                              @RequestParam(required = false) String surname,
                              @RequestParam(required = false) String password,
-                             @RequestParam(required = false) LocalDateTime birthDate,
+                             @RequestParam(required = false) Timestamp birthDate,
                              @RequestParam(required = false) AdminRole adminRole
     )
     {

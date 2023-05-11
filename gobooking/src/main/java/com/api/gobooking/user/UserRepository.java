@@ -4,9 +4,12 @@ import com.api.gobooking.user.appuser.AppUser;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +25,8 @@ public class UserRepository {
     }
 
     public Optional<User> findById(Integer id){
-        String sql = "SELECT a from \"user\" a WHERE a.id = :id";
-        Query query = entityManager.createNativeQuery(sql);
-
+        String jpql = "SELECT u FROM User u WHERE u.id = :id";
+        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
         query.setParameter("id", id);
 
         List<User> resultList = query.getResultList();
@@ -32,9 +34,8 @@ public class UserRepository {
     }
 
     public Optional<User> findByEmail(String email){
-        String sql = "SELECT a from \"user\" a WHERE a.email = :email";
-        Query query = entityManager.createNativeQuery(sql);
-
+        String jpql = "SELECT u FROM User u WHERE u.email = :email";
+        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
         query.setParameter("email", email);
 
         List<User> resultList = query.getResultList();

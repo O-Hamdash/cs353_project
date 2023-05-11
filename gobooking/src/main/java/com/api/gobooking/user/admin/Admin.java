@@ -2,13 +2,11 @@ package com.api.gobooking.user.admin;
 
 import com.api.gobooking.user.Role;
 import com.api.gobooking.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,16 +14,15 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
-//@Entity
-
-//@Table
+@Entity
+@Table(name = "admin")
 //@PrimaryKeyJoinColumn(name = "id")
 public class Admin extends User {
 
     @Enumerated(value = EnumType.STRING)
     private AdminRole adminRole;
 
-    public Admin(String name, String surname, String email, String password, LocalDateTime birthDate, AdminRole adminRole){
+    public Admin(String name, String surname, String email, String password, Timestamp birthDate, AdminRole adminRole){
         super(name, surname, email, password, birthDate, Role.ADMIN);
 
         this.adminRole = adminRole;

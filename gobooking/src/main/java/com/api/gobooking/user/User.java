@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,9 +18,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @NoArgsConstructor
 @ToString
-/*
+
 @Table(name = "`user`")
 @Entity
+/*
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
@@ -29,19 +31,20 @@ import java.time.LocalDateTime;
 )
 @PrimaryKeyJoinColumn(name = "id")
  */
-public abstract class User {
-    //@Id
-    //@Column(name = "id")
+public class User {
+    @Id
+    @Column(name = "id")
     private Integer id;
     private String name;
     private String surname;
     private String email;
     private String password;
-    private LocalDateTime birthDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp birthDate;
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    public User(String name, String surname, String email, String password, LocalDateTime birthDate, Role role) {
+    public User(String name, String surname, String email, String password, Timestamp birthDate, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
