@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @NoArgsConstructor
 @ToString
-@Table(name = "`USER`")
+/*
+@Table(name = "`user`")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -26,8 +27,10 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = Admin.class, name = "Admin"),
         @JsonSubTypes.Type(value = AppUser.class, name = "AppUser")}
 )
+@PrimaryKeyJoinColumn(name = "id")
+ */
 public abstract class User {
-    @Id
+    //@Id
     //@Column(name = "id")
     private Integer id;
     private String name;

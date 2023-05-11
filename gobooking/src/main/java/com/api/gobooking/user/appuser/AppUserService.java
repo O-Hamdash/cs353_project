@@ -1,5 +1,7 @@
 package com.api.gobooking.user.appuser;
 
+import com.api.gobooking.user.User;
+import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.util.Optional;
 @Service
 public class AppUserService {
     private final AppUserRepository appUserRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
 
     public List<AppUser> getAppUsers(){
@@ -29,7 +32,7 @@ public class AppUserService {
     }
 
     public boolean addAppUser(AppUserRequest appUserRequest){
-        Optional<AppUser> optionalAppUser = appUserRepository.findByEmail(appUserRequest.getEmail());
+        Optional<User> optionalAppUser = userRepository.findByEmail(appUserRequest.getEmail());
 
         if (optionalAppUser.isPresent()){
             throw new IllegalStateException(String.format("addAppUser: AppUser with email (%s) already exists", appUserRequest.getEmail()));

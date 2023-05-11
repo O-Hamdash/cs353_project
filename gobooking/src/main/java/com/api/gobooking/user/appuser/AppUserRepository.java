@@ -5,6 +5,7 @@ import com.api.gobooking.user.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
@@ -21,19 +22,22 @@ public class AppUserRepository {
     @PersistenceContext
     private EntityManager entityManager;
     private UserRepository userRepository;
+
+    @Transactional
     public boolean save(AppUser appUser){
 
         String userSql = "INSERT INTO " +
-                "user (name, surname, email, birth_date, role) " +
-                "VALUES (:name, :surname, :email, :birthdate, :role)";
+                "\"user\" (name, surname, email, password, birth_date, role) " +
+                "VALUES (:name, :surname, :email, :password, :birthdate, :role)";
 
         Query userQuery = entityManager.createNativeQuery(userSql);
 
         userQuery.setParameter("name", appUser.getName());
         userQuery.setParameter("surname", appUser.getSurname());
         userQuery.setParameter("email", appUser.getEmail());
+        userQuery.setParameter("password", appUser.getPassword());
         userQuery.setParameter("birthdate", appUser.getBirthDate());
-        userQuery.setParameter("role", appUser.getRole());
+        userQuery.setParameter("role", appUser.getRole().toString());
 
         userQuery.executeUpdate();
 

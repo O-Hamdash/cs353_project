@@ -16,13 +16,13 @@ public class UserRepository {
     private EntityManager entityManager;
 
     public List<User> findAll(){
-        String sql = "SELECT * FROM user";
+        String sql = "SELECT * FROM \"user\"";
         Query query = entityManager.createNativeQuery(sql, User.class);
         return query.getResultList();
     }
 
     public Optional<User> findById(Integer id){
-        String sql = "SELECT a from user a WHERE a.id = :id";
+        String sql = "SELECT a from \"user\" a WHERE a.id = :id";
         Query query = entityManager.createNativeQuery(sql);
 
         query.setParameter("id", id);
@@ -32,7 +32,7 @@ public class UserRepository {
     }
 
     public Optional<User> findByEmail(String email){
-        String sql = "SELECT a from user a WHERE a.email = :email";
+        String sql = "SELECT a from \"user\" a WHERE a.email = :email";
         Query query = entityManager.createNativeQuery(sql);
 
         query.setParameter("email", email);

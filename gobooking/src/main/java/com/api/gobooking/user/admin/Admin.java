@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
-@Entity
+//@Entity
 
 //@Table
-@PrimaryKeyJoinColumn(name = "id")
+//@PrimaryKeyJoinColumn(name = "id")
 public class Admin extends User {
 
     @Enumerated(value = EnumType.STRING)
