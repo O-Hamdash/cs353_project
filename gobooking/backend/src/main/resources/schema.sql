@@ -18,15 +18,15 @@ CREATE TABLE "user"
     password  varchar(255) NOT NULL,
     birth_date timestamp    NOT NULL,
     role      varchar(255) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (user_id)
 );
 
 CREATE TABLE "admin"
 (
     user_id    int          NOT NULL,
     admin_role varchar(255),
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES "user" (id)
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES "user" (user_id)
         ON DELETE CASCADE
 );
 
@@ -40,8 +40,8 @@ CREATE TABLE "app_user"
     is_blocked             boolean   NOT NULL,
     is_banned_from_booking boolean   NOT NULL,
     is_banned_from_posting boolean   NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES "user" (id)
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES "user" (user_id)
         ON DELETE CASCADE
 );
 
