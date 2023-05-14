@@ -152,7 +152,7 @@ public class AppUserService {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 
         if (optionalAppUser.isEmpty()){
-            throw new IllegalStateException(String.format("updateCity: AppUser with id (%s) does not exist", id));
+            throw new IllegalStateException(String.format("updateTaxNumber: AppUser with id (%s) does not exist", id));
         }
 
         appUserRepository.updateTaxNumber(id, taxNumber);
