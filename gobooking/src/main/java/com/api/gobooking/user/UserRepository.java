@@ -21,6 +21,30 @@ public class UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /*
+     * Adds user to database and returns the automatically generated id.
+     */
+    public int save(User user){
+        String userSql = "INSERT INTO " +
+                "\"user\" (name, surname, email, password, birth_date, role) " +
+                "VALUES (:name, :surname, :email, :password, :birthdate, :role)";
+
+        Query userQuery = entityManager.createNativeQuery(userSql);
+
+        userQuery.setParameter("name", user.getName());
+        userQuery.setParameter("surname", user.getSurname());
+        userQuery.setParameter("email", user.getEmail());
+        userQuery.setParameter("password", user.getPassword());
+        userQuery.setParameter("birthdate", user.getBirthDate());
+        userQuery.setParameter("role", user.getRole().toString());
+
+        userQuery.executeUpdate();
+
+        User insertedUser = findByEmail(user.getEmail()).get();
+
+        return insertedUser.getId();
+    }
+
     public List<User> findAll(){
         String jpql = "SELECT u FROM User u";
         TypedQuery<User> query = entityManager.createQuery(jpql, User.class);

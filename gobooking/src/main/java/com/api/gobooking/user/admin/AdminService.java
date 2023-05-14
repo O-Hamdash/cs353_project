@@ -1,5 +1,7 @@
 package com.api.gobooking.user.admin;
 
+import com.api.gobooking.user.User;
+import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class AdminService {
     private final AdminRepository adminRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public List<Admin> getAdmins(){
         return adminRepository.findAll();
@@ -30,10 +33,10 @@ public class AdminService {
     }
 
     public boolean addAdmin(AdminRequest adminRequest){
-        Optional<Admin> optionalAdmin = adminRepository.findByEmail(adminRequest.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(adminRequest.getEmail());
 
-        if (optionalAdmin.isPresent()){
-            throw new IllegalStateException(String.format("addAdmin: Admin with email (%s) already exists", adminRequest.getEmail()));
+        if (optionalUser.isPresent()){
+            throw new IllegalStateException(String.format("addAdmin: User with email (%s) already exists", adminRequest.getEmail()));
         }
 
         adminRequest.setPassword(userService.encodePassword(adminRequest.getPassword()));
