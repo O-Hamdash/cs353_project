@@ -9,40 +9,43 @@ CREATE DATABASE gobookingdb
 -- If you want to set the default database
 
 
-CREATE TABLE "User"
+CREATE TABLE "user"
 (
-    user_id   SERIAL PRIMARY KEY NOT NULL,
-    email     varchar(255)       NOT NULL,
-    "name"      varchar(255)       NOT NULL,
-    surname   varchar(255)       NOT NULL,
-    "password"  varchar(255)       NOT NULL,
-    birthdate TIMESTAMP          NOT NULL
+    user_id   SERIAL       NOT NULL,
+    name      varchar(255) NOT NULL,
+    surname   varchar(255) NOT NULL,
+    email     varchar(255) NOT NULL,
+    password  varchar(255) NOT NULL,
+    birth_date timestamp    NOT NULL,
+    role      varchar(255) NOT NULL,
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE Admin
+CREATE TABLE "admin"
 (
-    user_id    int NOT NULL,
+    user_id    int          NOT NULL,
     admin_role varchar(255),
-    PRIMARY KEY (user_id),
-    FOREIGN KEY (user_id) REFERENCES "User" (user_id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES "user" (id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE App_user
+CREATE TABLE "app_user"
 (
     user_id                int       NOT NULL,
     balance                int,
-    is_blocked             BOOLEAN   NOT NULL,
-    is_banned_from_booking BOOLEAN   NOT NULL,
     city                   varchar(255),
-    registration_date      TIMESTAMP NOT NULL,
-    tax_number             int,
-    PRIMARY KEY (user_id),
-    FOREIGN KEY (user_id) REFERENCES "User" (user_id)
+    tax_number             varchar(255),
+    registration_date      timestamp NOT NULL,
+    is_blocked             boolean   NOT NULL,
+    is_banned_from_booking boolean   NOT NULL,
+    is_banned_from_posting boolean   NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES "user" (id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Property
+CREATE TABLE property
 (
     property_id     SERIAL PRIMARY KEY NOT NULL,
     title           varchar(255),
@@ -54,34 +57,34 @@ CREATE TABLE Property
     price_per_night float,
     owner_id        int                NOT NULL,
     location_id     int                NOT NULL,
-    FOREIGN KEY (owner_id) REFERENCES "User" (user_id)
+    FOREIGN KEY (owner_id) REFERENCES "user" (user_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (location_id) REFERENCES Location (location_id)
+    FOREIGN KEY (location_id) REFERENCES location (location_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
 
 
-CREATE TABLE Room
+CREATE TABLE room
 (
     property_id     int NOT NULL,
     room_dimensions int,
     PRIMARY KEY (property_id),
-    FOREIGN KEY (property_id) REFERENCES Property (property_id)
+    FOREIGN KEY (property_id) REFERENCES property (property_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE House
+CREATE TABLE house
 (
     property_id      int NOT NULL,
     number_of_rooms  int,
     house_dimensions int,
     PRIMARY KEY (property_id),
-    FOREIGN KEY (property_id) REFERENCES Property (property_id) ON DELETE CASCADE
+    FOREIGN KEY (property_id) REFERENCES property (property_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Location
+CREATE TABLE location
 (
     location_id        SERIAL NOT NULL,
     city               varchar(255),
@@ -93,7 +96,7 @@ CREATE TABLE Location
     PRIMARY KEY (location_id)
 );
 
-CREATE TABLE Booking
+CREATE TABLE booking
 (
     booking_id  SERIAL PRIMARY KEY NOT NULL,
     start_date  TIMESTAMP          NOT NULL,
@@ -103,11 +106,11 @@ CREATE TABLE Booking
     property_id int                NOT NULL,
     FOREIGN KEY (booker_id) REFERENCES App_user (user_id)
         ON DELETE CASCADE,
-    FOREIGN KEY (property_id) REFERENCES Property (property_id)
+    FOREIGN KEY (property_id) REFERENCES property (property_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Review
+CREATE TABLE review
 (
     review_id    SERIAL PRIMARY KEY NOT NULL,
     reviewer_id  int                NOT NULL,
@@ -117,58 +120,58 @@ CREATE TABLE Review
     booking_id   int                NOT NULL,
     FOREIGN KEY (reviewer_id) REFERENCES App_user (user_id)
         ON DELETE CASCADE,
-    FOREIGN KEY (booking_id) REFERENCES Booking (booking_id)
+    FOREIGN KEY (booking_id) REFERENCES booking (booking_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Review_for_traveller
+CREATE TABLE review_for_traveller
 (
     review_id    int NOT NULL,
     traveller_id int NOT NULL,
     PRIMARY KEY (review_id),
-    FOREIGN KEY (review_id) REFERENCES Review (review_id)
+    FOREIGN KEY (review_id) REFERENCES review (review_id)
         ON DELETE CASCADE,
     FOREIGN KEY (traveller_id) REFERENCES App_user (user_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Review_for_homeowner
+CREATE TABLE review_for_homeowner
 (
     review_id    int NOT NULL,
     homeowner_id int NOT NULL,
     PRIMARY KEY (review_id),
-    FOREIGN KEY (review_id) REFERENCES Review (review_id)
+    FOREIGN KEY (review_id) REFERENCES review (review_id)
         ON DELETE CASCADE,
     FOREIGN KEY (homeowner_id) REFERENCES App_user (user_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Review_for_property
+CREATE TABLE review_for_property
 (
     review_id   int NOT NULL,
     property_id int NOT NULL,
     PRIMARY KEY (review_id),
-    FOREIGN KEY (review_id) REFERENCES Review (review_id)
+    FOREIGN KEY (review_id) REFERENCES review (review_id)
         ON DELETE CASCADE,
-    FOREIGN KEY (property_id) REFERENCES Property (property_id)
+    FOREIGN KEY (property_id) REFERENCES property (property_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Pays
+CREATE TABLE pays
 (
     booking_id   int      NOT NULL,
     payment_date TIMESTAMP NOT NULL,
     "cost"         float    NOT NULL,
     PRIMARY KEY (booking_id),
-    FOREIGN KEY (booking_id) REFERENCES Booking (booking_id)
+    FOREIGN KEY (booking_id) REFERENCES booking (booking_id)
         ON DELETE CASCADE
 );
 
-CREATE TABLE Service
+CREATE TABLE service
 (
     service_name varchar(255) PRIMARY KEY NOT NULL,
     property_id  int                      NOT NULL,
-    FOREIGN KEY (property_id) REFERENCES Property
+    FOREIGN KEY (property_id) REFERENCES property
         ON DELETE CASCADE
 );
 
@@ -177,11 +180,11 @@ CREATE TABLE Service
 -- no Assertion in PostgreSQL, use Rule instead
 
 CREATE OR REPLACE RULE no_overlapping_bookings AS
-    ON INSERT TO Booking
+    ON INSERT TO booking
     WHERE EXISTS (
             SELECT *
-            FROM Booking b1,
-                 Booking b2
+            FROM booking b1,
+                 booking b2
             WHERE b1.booking_id <> b2.booking_id
               AND b1.property_id = b2.property_id
               AND b1.status <> 'cancelled'
@@ -192,23 +195,23 @@ CREATE OR REPLACE RULE no_overlapping_bookings AS
     DO INSTEAD NOTHING;
 
 -- unique_user_email assertion becomes a constraint in PostgreSQL
-ALTER TABLE "User" ADD CONSTRAINT unique_user_email UNIQUE (email);
+ALTER TABLE "user" ADD CONSTRAINT unique_user_email UNIQUE (email);
 
 -- unique_review_per_booking assertion becomes a constraint in PostgreSQL
-ALTER TABLE Review ADD CONSTRAINT unique_review_per_booking UNIQUE (booking_id, reviewer_id);
+ALTER TABLE review ADD CONSTRAINT unique_review_per_booking UNIQUE (booking_id, reviewer_id);
 
 -- unique_property_owner assertion becomes a constraint in PostgreSQL
-ALTER TABLE Property ADD CONSTRAINT unique_property_owner UNIQUE (owner_id);
+ALTER TABLE property ADD CONSTRAINT unique_property_owner UNIQUE (owner_id);
 
 -- check_services assertion becomes a constraint in PostgreSQL
-ALTER TABLE Service ADD CONSTRAINT check_services
+ALTER TABLE service ADD CONSTRAINT check_services
     CHECK (service_name IN ('Wi - Fi', 'Security',
                             'Breakfast', 'Sea View',
                             'Kitchen', 'Play Ground',
                             'Park', 'Garden', 'Organic Life'));
 
 -- valid_booking_status assertion becomes a constraint postgresql
-ALTER TABLE Booking ADD CONSTRAINT valid_booking_status
+ALTER TABLE booking ADD CONSTRAINT valid_booking_status
     CHECK ( status IN ('blocked', 'booked', 'available'));
 
 
@@ -221,14 +224,14 @@ CREATE OR REPLACE FUNCTION delete_reviews()
     RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.is_blocked = true THEN
-        DELETE FROM Review WHERE reviewer_id = NEW.user_id;
+        DELETE FROM review WHERE reviewer_id = NEW.user_id;
     END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER delete_reviews_trigger
-    AFTER UPDATE ON App_user
+    AFTER UPDATE ON app_user
     FOR EACH ROW
 EXECUTE FUNCTION delete_reviews();
 
@@ -237,20 +240,20 @@ CREATE OR REPLACE FUNCTION update_balances()
     RETURNS TRIGGER AS $$
 BEGIN
     -- Deduct booking cost from travelers' balance
-    UPDATE App_user
+    UPDATE app_user
     SET balance = balance - (SELECT cost
                              FROM pays
                              WHERE booking_id = NEW.booking_id)
     WHERE user_id = NEW.booker_id;
 
     -- Add booking cost to house owner's balance
-    UPDATE App_user
+    UPDATE app_user
     SET balance = balance + (SELECT cost
-                             FROM Pays
+                             FROM pays
                              WHERE booking_id = NEW.booking_id)
-    WHERE user_id = (SELECT Property.owner_id
-                     FROM Property
-                     WHERE Property.property_id = NEW.property_id);
+    WHERE user_id = (SELECT property.owner_id
+                     FROM property
+                     WHERE property.property_id = NEW.property_id);
 
     RETURN NEW;
 END;
@@ -258,20 +261,18 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER update_balances
     AFTER INSERT
-    ON Booking
+    ON booking
     FOR EACH ROW
 EXECUTE FUNCTION update_balances();
 
 
 -- VIEW
 
-CREATE VIEW Homeowner AS
-SELECT App_user.*
-FROM App_user
+CREATE VIEW homeowner AS
+SELECT app_user.*
+FROM app_user
 WHERE EXISTS (
               SELECT *
-              FROM Property
-              WHERE Property.owner_id = App_user.user_id
+              FROM property
+              WHERE property.owner_id = app_user.user_id
           );
-
-
