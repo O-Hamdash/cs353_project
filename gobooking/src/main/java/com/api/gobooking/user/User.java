@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 @Table(name = "`user`")
 @Entity
-/*
+
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = AppUser.class, name = "AppUser")}
 )
 @PrimaryKeyJoinColumn(name = "id")
- */
+
 public class User {
     @Id
     @Column(name = "id")

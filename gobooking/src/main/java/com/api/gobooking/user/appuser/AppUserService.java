@@ -147,4 +147,16 @@ public class AppUserService {
 
         return true;
     }
+
+    public boolean updateTaxNumber(Integer id, String taxNumber) {
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
+
+        if (optionalAppUser.isEmpty()){
+            throw new IllegalStateException(String.format("updateCity: AppUser with id (%s) does not exist", id));
+        }
+
+        appUserRepository.updateTaxNumber(id, taxNumber);
+
+        return true;
+    }
 }

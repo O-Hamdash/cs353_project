@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class AppUser extends User {
     private Double balance;
     private String city;
-    private Integer taxNumber;
+    private String taxNumber;
     private Timestamp registrationDate;
     private Boolean isBlocked;
     private Boolean isBannedFromBooking;

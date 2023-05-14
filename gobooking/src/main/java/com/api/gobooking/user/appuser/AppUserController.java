@@ -1,6 +1,7 @@
 package com.api.gobooking.user.appuser;
 
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,5 +71,10 @@ public class AppUserController {
     @PutMapping(path = "update_city/{appUserId}")
     public void updateCity(@PathVariable("appUserId") Integer appUserId, @RequestParam String city){
         appUserService.updateCity(appUserId, city);
+    }
+
+    @PutMapping(path="update_tax_number/{appUserId}")
+    public void updateTaxNumber(@PathVariable("appUserId") Integer appUserId, @RequestParam String taxNumber){
+        appUserService.updateTaxNumber(appUserId, taxNumber);
     }
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 
@@ -13,14 +15,15 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Repository
 public class UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
     public List<User> findAll(){
-        String sql = "SELECT * FROM \"user\"";
-        Query query = entityManager.createNativeQuery(sql, User.class);
+        String jpql = "SELECT u FROM User u";
+        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
         return query.getResultList();
     }
 
@@ -42,10 +45,11 @@ public class UserRepository {
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 
+    @Transactional
     public void updateUser(User user){
-        String updateUserSql = "UPDATE user " +
-                "SET name = :name, surname = :surname, password = :password, birthdate = :birthdate " +
-                "WHERE user_id = :id";
+        String updateUserSql = "UPDATE \"user\" " +
+                "SET name = :name, surname = :surname, password = :password, birth_date = :birthdate " +
+                "WHERE id = :id";
         Query updateUserQuery = entityManager.createNativeQuery(updateUserSql);
         updateUserQuery.setParameter("name", user.getName());
         updateUserQuery.setParameter("surname", user.getSurname());
@@ -56,8 +60,9 @@ public class UserRepository {
         updateUserQuery.executeUpdate();
     }
 
+    @Transactional
     public void deleteById(Integer id) {
-        String sql = "DELETE FROM user WHERE id = :id";
+        String sql = "DELETE FROM \"user\" WHERE id = :id";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("id", id);
         query.executeUpdate();

@@ -2,14 +2,13 @@ package com.api.gobooking.user.appuser;
 
 
 import com.api.gobooking.user.User;
-import com.api.gobooking.user.appuser.AppUser;
 import com.api.gobooking.user.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Repository
 public class AppUserRepository {
 
@@ -44,14 +44,6 @@ public class AppUserRepository {
 
         userQuery.executeUpdate();
 
-        /*
-        // Get the automatically generated user id
-        String lastInsertIdSql = "SELECT LAST_INSERT_ID()";
-        Query lastInsertIdQuery = entityManager.createNativeQuery(lastInsertIdSql);
-        int userId = ((Number) lastInsertIdQuery.getSingleResult()).intValue();
-
-         */
-
         User user = userRepository.findByEmail(appUser.getEmail()).get();
         int userId = user.getId();
 
@@ -76,8 +68,8 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findById(Integer id){
-        String sql = "SELECT a from app_user a WHERE a.id = :id";
-        Query query = entityManager.createNativeQuery(sql);
+        String jpql = "SELECT a from AppUser a WHERE a.id = :id";
+        TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
 
         query.setParameter("id", id);
 
@@ -86,7 +78,7 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findByEmail(String email){
-        String jpql = "SELECT u from User u, AppUser a WHERE u.id = a.id AND u.email = :email";
+        String jpql = "SELECT a from User u, AppUser a WHERE u.id = a.id AND u.email = :email";
         TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
 
         query.setParameter("email", email);
@@ -96,19 +88,21 @@ public class AppUserRepository {
     }
 
     public List<AppUser> findAll() {
-        String sql = "SELECT * FROM app_user natural join \"user\"";
-        Query query = entityManager.createNativeQuery(sql, AppUser.class);
+        String jpql = "SELECT a FROM AppUser a";
+        TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
         return query.getResultList();
     }
 
+    @Transactional
     public void updateAppUser(AppUser appUser){
         userRepository.updateUser(appUser);
     }
 
+    @Transactional
     public void setIsBlocked(Integer id, Boolean isBlocked){
-        String sql = "UPDATE app_user a " +
-                "SET a.is_blocked = :is_blocked " +
-                "WHERE a.id = :id";
+        String sql = "UPDATE app_user " +
+                "SET is_blocked = :is_blocked " +
+                "WHERE id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -118,10 +112,11 @@ public class AppUserRepository {
         query.executeUpdate();
     }
 
+    @Transactional
     public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
-        String sql = "UPDATE app_user a " +
-                "SET a.is_banned_from_booking = :is_banned_from_booking " +
-                "WHERE a.id = :id";
+        String sql = "UPDATE app_user " +
+                "SET is_banned_from_booking = :is_banned_from_booking " +
+                "WHERE id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -131,10 +126,11 @@ public class AppUserRepository {
         query.executeUpdate();
     }
 
+    @Transactional
     public void setIsBannedFromPosting(Integer id, Boolean isBannedFromPosting){
-        String sql = "UPDATE app_user a " +
-                "SET a.is_banned_from_posting = :is_banned_from_posting " +
-                "WHERE a.id = :id";
+        String sql = "UPDATE app_user " +
+                "SET is_banned_from_posting = :is_banned_from_posting " +
+                "WHERE id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -144,10 +140,11 @@ public class AppUserRepository {
         query.executeUpdate();
     }
 
+    @Transactional
     public void updateBalance(Integer id, Double balance){
-        String sql = "UPDATE app_user a " +
-                "SET a.balance = :balance " +
-                "WHERE a.id = :id";
+        String sql = "UPDATE app_user " +
+                "SET balance = :balance " +
+                "WHERE id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -157,10 +154,11 @@ public class AppUserRepository {
         query.executeUpdate();
     }
 
+    @Transactional
     public void updateCity(Integer id, String city){
-        String sql = "UPDATE app_user a " +
-                "SET a.city = :city " +
-                "WHERE a.id = :id";
+        String sql = "UPDATE app_user " +
+                "SET city = :city " +
+                "WHERE id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -170,8 +168,22 @@ public class AppUserRepository {
         query.executeUpdate();
     }
 
+    @Transactional
+    public void updateTaxNumber(Integer id, String taxNumber) {
+        String sql = "UPDATE app_user " +
+                "SET tax_number = :tax_number " +
+                "WHERE id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("tax_number", taxNumber);
+
+        query.executeUpdate();
+    }
+
+    @Transactional
     public void deleteById(Integer id) {
         userRepository.deleteById(id);
     }
-
 }
