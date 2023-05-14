@@ -27,7 +27,7 @@ public class AdminRepository {
         int userId = userRepository.save(admin);
 
         String adminSql = "INSERT INTO " +
-                "admin (id, admin_role) " +
+                "admin (user_id, admin_role) " +
                 "VALUES (:id, :admin_role)";
 
         Query adminQuery = entityManager.createNativeQuery(adminSql);
@@ -70,7 +70,7 @@ public class AdminRepository {
     public void updateAdmin(Admin admin){
         userRepository.updateUser(admin);
 
-        String updateAdminSql = "UPDATE admin SET admin_role = :admin_role WHERE id = :id";
+        String updateAdminSql = "UPDATE admin SET admin_role = :admin_role WHERE user_id = :id";
         Query updateAdminQuery = entityManager.createNativeQuery(updateAdminSql);
         updateAdminQuery.setParameter("admin_role", admin.getAdminRole());
         updateAdminQuery.setParameter("id", admin.getId());

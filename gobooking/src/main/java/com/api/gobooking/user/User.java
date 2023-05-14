@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 
 public class User {
     @Id
-    @Column(name = "id")
+    @Column(name = "user_id")
     private Integer id;
     private String name;
     private String surname;

@@ -73,7 +73,7 @@ public class UserRepository {
     public void updateUser(User user){
         String updateUserSql = "UPDATE \"user\" " +
                 "SET name = :name, surname = :surname, password = :password, birth_date = :birthdate " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
         Query updateUserQuery = entityManager.createNativeQuery(updateUserSql);
         updateUserQuery.setParameter("name", user.getName());
         updateUserQuery.setParameter("surname", user.getSurname());
@@ -86,7 +86,7 @@ public class UserRepository {
 
     @Transactional
     public void deleteById(Integer id) {
-        String sql = "DELETE FROM \"user\" WHERE id = :id";
+        String sql = "DELETE FROM \"user\" WHERE user_id = :id";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("id", id);
         query.executeUpdate();

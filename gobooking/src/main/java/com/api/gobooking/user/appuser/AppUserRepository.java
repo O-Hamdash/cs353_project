@@ -32,7 +32,7 @@ public class AppUserRepository {
         int userId = userRepository.save(appUser);
 
         String appUserSql = "INSERT INTO " +
-                "app_user (id, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
+                "app_user (user_id, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
                 "VALUES (:id, :balance, :city, :tax_number, :registration_date, :is_blocked, :is_banned_from_booking, :is_banned_from_posting)";
 
         Query appUserQuery = entityManager.createNativeQuery(appUserSql);
@@ -86,7 +86,7 @@ public class AppUserRepository {
     public void setIsBlocked(Integer id, Boolean isBlocked){
         String sql = "UPDATE app_user " +
                 "SET is_blocked = :is_blocked " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -100,7 +100,7 @@ public class AppUserRepository {
     public void setIsBannedFromBooking(Integer id, Boolean isBannedFromBooking){
         String sql = "UPDATE app_user " +
                 "SET is_banned_from_booking = :is_banned_from_booking " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -114,7 +114,7 @@ public class AppUserRepository {
     public void setIsBannedFromPosting(Integer id, Boolean isBannedFromPosting){
         String sql = "UPDATE app_user " +
                 "SET is_banned_from_posting = :is_banned_from_posting " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -128,7 +128,7 @@ public class AppUserRepository {
     public void updateBalance(Integer id, Double balance){
         String sql = "UPDATE app_user " +
                 "SET balance = :balance " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -142,7 +142,7 @@ public class AppUserRepository {
     public void updateCity(Integer id, String city){
         String sql = "UPDATE app_user " +
                 "SET city = :city " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -156,7 +156,7 @@ public class AppUserRepository {
     public void updateTaxNumber(Integer id, String taxNumber) {
         String sql = "UPDATE app_user " +
                 "SET tax_number = :tax_number " +
-                "WHERE id = :id";
+                "WHERE user_id = :id";
 
         Query query = entityManager.createNativeQuery(sql);
 
