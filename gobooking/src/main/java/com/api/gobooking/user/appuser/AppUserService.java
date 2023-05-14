@@ -34,10 +34,10 @@ public class AppUserService {
 
     public boolean addAppUser(AppUserRequest appUserRequest){
 
-        Optional<User> optionalAppUser = userRepository.findByEmail(appUserRequest.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(appUserRequest.getEmail());
 
-        if (optionalAppUser.isPresent()){
-            throw new IllegalStateException(String.format("addAppUser: AppUser with email (%s) already exists", appUserRequest.getEmail()));
+        if (optionalUser.isPresent()){
+            throw new IllegalStateException(String.format("addAppUser: User with email (%s) already exists", appUserRequest.getEmail()));
         }
 
         appUserRequest.setPassword(userService.encodePassword(appUserRequest.getPassword()));

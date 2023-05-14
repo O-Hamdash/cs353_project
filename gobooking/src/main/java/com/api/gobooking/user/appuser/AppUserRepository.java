@@ -29,23 +29,7 @@ public class AppUserRepository {
     @Transactional
     public boolean save(AppUser appUser){
 
-        String userSql = "INSERT INTO " +
-                "\"user\" (name, surname, email, password, birth_date, role) " +
-                "VALUES (:name, :surname, :email, :password, :birthdate, :role)";
-
-        Query userQuery = entityManager.createNativeQuery(userSql);
-
-        userQuery.setParameter("name", appUser.getName());
-        userQuery.setParameter("surname", appUser.getSurname());
-        userQuery.setParameter("email", appUser.getEmail());
-        userQuery.setParameter("password", appUser.getPassword());
-        userQuery.setParameter("birthdate", appUser.getBirthDate());
-        userQuery.setParameter("role", appUser.getRole().toString());
-
-        userQuery.executeUpdate();
-
-        User user = userRepository.findByEmail(appUser.getEmail()).get();
-        int userId = user.getId();
+        int userId = userRepository.save(appUser);
 
         String appUserSql = "INSERT INTO " +
                 "app_user (id, balance, city, tax_number, registration_date, is_blocked, is_banned_from_booking, is_banned_from_posting) " +
