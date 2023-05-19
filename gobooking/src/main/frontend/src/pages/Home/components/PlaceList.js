@@ -16,7 +16,7 @@ function PlaceList(props) {
               rate={item.rate}
               location={item.location}
               placeType={item.placeType}
-              rentalPart={item.rentalPart}
+              rentalType={item.rentalType}
             />
           );
         })}

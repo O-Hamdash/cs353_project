@@ -21,7 +21,7 @@ function PlaceSmall(props) {
           {props.pricePerNight} per night
         </p>
         <p>
-          <i class="fa-sharp fa-solid fa-building"></i> {props.placeType} / {props.rentalPart}
+          <i class="fa-sharp fa-solid fa-building"></i> {props.placeType} / {props.rentalType}
         </p>
         <p>
           <i class="fa-sharp fa-solid fa-location-dot"></i> {props.location}
