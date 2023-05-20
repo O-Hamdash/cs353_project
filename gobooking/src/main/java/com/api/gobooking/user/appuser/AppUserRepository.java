@@ -52,8 +52,8 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findById(Integer id){
-        String jpql = "SELECT a from AppUser join User as a WHERE a.id = :id";
-        TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
+        String sql = "select * from \"user\" u natural join app_user a where u.user_id = :id";
+        Query query = entityManager.createNativeQuery(sql, AppUser.class);
 
         query.setParameter("id", id);
 
@@ -62,8 +62,8 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findByEmail(String email){
-        String jpql = "SELECT a from User join AppUser as a WHERE a.email = :email";
-        TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
+        String sql = "select * from \"user\" u natural join app_user a where u.email = :email";
+        Query query = entityManager.createNativeQuery(sql, AppUser.class);
 
         query.setParameter("email", email);
 
@@ -72,8 +72,8 @@ public class AppUserRepository {
     }
 
     public List<AppUser> findAll() {
-        String jpql = "SELECT a FROM AppUser join User as a";
-        TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
+        String sql = "select * from \"user\" natural join app_user";
+        Query query = entityManager.createNativeQuery(sql, AppUser.class);
         return query.getResultList();
     }
 

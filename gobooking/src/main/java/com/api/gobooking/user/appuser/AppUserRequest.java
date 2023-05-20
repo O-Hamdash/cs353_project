@@ -20,5 +20,4 @@ public class AppUserRequest {
     private Timestamp birthDate;
     private Double balance;
     private String city;
-    private Integer taxNumber;
 }
