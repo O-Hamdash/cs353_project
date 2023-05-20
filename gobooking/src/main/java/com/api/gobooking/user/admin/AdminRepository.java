@@ -41,7 +41,7 @@ public class AdminRepository {
     }
 
     public Optional<Admin> findById(Integer id){
-        String jpql = "SELECT a from Admin a WHERE a.id = :id";
+        String jpql = "SELECT a from Admin join User as a WHERE a.id = :id";
         TypedQuery<Admin> query = entityManager.createQuery(jpql, Admin.class);
 
         query.setParameter("id", id);
@@ -51,7 +51,7 @@ public class AdminRepository {
     }
 
     public Optional<Admin> findByEmail(String email){
-        String jpql = "SELECT a from User u, Admin a WHERE u.id = a.id AND u.email = :email";
+        String jpql = "SELECT a from User join Admin as a WHERE a.email = :email";
         TypedQuery<Admin> query = entityManager.createQuery(jpql, Admin.class);
 
         query.setParameter("email", email);
@@ -61,7 +61,7 @@ public class AdminRepository {
     }
 
     public List<Admin> findAll() {
-        String jpql = "SELECT a FROM Admin a";
+        String jpql = "SELECT a FROM Admin join User as a";
         TypedQuery<Admin> query = entityManager.createQuery(jpql, Admin.class);
         return query.getResultList();
     }

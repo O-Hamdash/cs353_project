@@ -52,7 +52,7 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findById(Integer id){
-        String jpql = "SELECT a from AppUser a WHERE a.id = :id";
+        String jpql = "SELECT a from AppUser join User as a WHERE a.id = :id";
         TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
 
         query.setParameter("id", id);
@@ -62,7 +62,7 @@ public class AppUserRepository {
     }
 
     public Optional<AppUser> findByEmail(String email){
-        String jpql = "SELECT a from User u, AppUser a WHERE u.id = a.id AND u.email = :email";
+        String jpql = "SELECT a from User join AppUser as a WHERE a.email = :email";
         TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
 
         query.setParameter("email", email);
@@ -72,7 +72,7 @@ public class AppUserRepository {
     }
 
     public List<AppUser> findAll() {
-        String jpql = "SELECT a FROM AppUser a";
+        String jpql = "SELECT a FROM AppUser join User as a";
         TypedQuery<AppUser> query = entityManager.createQuery(jpql, AppUser.class);
         return query.getResultList();
     }
