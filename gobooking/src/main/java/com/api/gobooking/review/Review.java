@@ -40,9 +40,9 @@ public class Review {
         this.likes = likes;
     }
 
-    public Review(ReviewRequest reviewRequest, Integer reviewer_id, Integer booking_id) {
-        this.reviewer_id = reviewer_id;
-        this.booking_id = booking_id;
+    public Review(ReviewRequest reviewRequest) {
+        this.reviewer_id = reviewRequest.getReviewer_id();
+        this.booking_id = reviewRequest.getBooking_id();
         this.rating = reviewRequest.getRating();
         this.review_title = reviewRequest.getReview_title();
         this.review_body = reviewRequest.getReview_body();

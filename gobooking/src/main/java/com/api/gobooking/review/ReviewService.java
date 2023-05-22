@@ -32,11 +32,8 @@ public class ReviewService {
 
     public boolean addReview(ReviewRequest reviewRequest){
         boolean success = false;
-        Integer reviewer_id = 1; // manual for now
-        Integer booking_id = 10; // manual for now
-        Review review = new Review(reviewRequest, reviewer_id, booking_id);
+        Review review = new Review(reviewRequest);
         reviewRepository.save(review);
-
         success = true;
         return success;
     }
