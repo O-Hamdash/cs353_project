@@ -23,12 +23,12 @@ public class ReviewRepository {
         boolean success = false;
 
         String reviewInsert = "INSERT INTO " +
-                "review (reviwer_id, rating, review_title, review_body, booking_id, review_date, likes) " +
-                "VALUES (:reviwer_id, :rating, :review_title, :review_body, :booking_id, :review_date, :likes)";
+                "review (reviewer_id, rating, review_title, review_body, booking_id, review_date, likes) " +
+                "VALUES (:reviewer_id, :rating, :review_title, :review_body, :booking_id, :review_date, :likes)";
 
         Query reviewQuery = entityManager.createNativeQuery(reviewInsert);
 
-        reviewQuery.setParameter("reviwer_id", review.getReviewer_id());
+        reviewQuery.setParameter("reviewer_id", review.getReviewer_id());
         reviewQuery.setParameter("rating", review.getRating());
         reviewQuery.setParameter("review_title", review.getReview_title());
         reviewQuery.setParameter("review_body", review.getReview_body());
@@ -61,11 +61,11 @@ public class ReviewRepository {
     @Transactional
     public void updateReview(Review review){
         String reviewUpdate = "UPDATE review " +
-                "SET reviwer_id = :reviwer_id, rating = :rating, review_title = :review_title, review_body = :review_body, booking_id = :booking_id, review_date = :review_date, likes = :likes " +
+                "SET reviewer_id = :reviewer_id, rating = :rating, review_title = :review_title, review_body = :review_body, booking_id = :booking_id, review_date = :review_date, likes = :likes " +
                 "WHERE review_id = :review_id";
         Query updateReviewQuery = entityManager.createNativeQuery(reviewUpdate);
 
-        updateReviewQuery.setParameter("reviwer_id", review.getReviewer_id());
+        updateReviewQuery.setParameter("reviewer_id", review.getReviewer_id());
         updateReviewQuery.setParameter("rating", review.getRating());
         updateReviewQuery.setParameter("review_title", review.getReview_title());
         updateReviewQuery.setParameter("review_body", review.getReview_body());
