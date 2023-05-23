@@ -24,7 +24,7 @@ public class BookingController {
         if (created) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Booking created successfully");
         } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Booking with the same ID already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Booking Creation failed because of constraints violation");
         }
     }
 

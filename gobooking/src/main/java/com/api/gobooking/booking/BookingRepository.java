@@ -24,12 +24,12 @@ public class BookingRepository {
     public boolean insert(Booking booking){
 
         String bookingSql = "INSERT INTO " +
-                "booking (booking_id , start_date, end_date, status,property_id,booker_id) " +
-                "VALUES (:booking_id, :start_date, :end_date, :status,:property_id,:booker_id)";
+                "booking (start_date, end_date, status,property_id,booker_id) " +
+                "VALUES (:start_date, :end_date, :status,:property_id,:booker_id)";
 
         Query bookingQuery = entityManager.createNativeQuery(bookingSql);
 
-        bookingQuery.setParameter("booking_id", booking.getBooking_id());
+        //bookingQuery.setParameter("booking_id", booking.getBooking_id());
         bookingQuery.setParameter("start_date", booking.getStart_date());
         bookingQuery.setParameter("end_date", booking.getEnd_date());
         bookingQuery.setParameter("status", booking.getStatus());
