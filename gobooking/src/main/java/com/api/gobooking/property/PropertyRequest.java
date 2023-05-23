@@ -16,7 +16,6 @@ public class PropertyRequest {
     private String description;
     private Integer price_per_night;
     private PropertyType type;
-    private Service service;
     private Integer owner_id;
     private String city;
     private String district;

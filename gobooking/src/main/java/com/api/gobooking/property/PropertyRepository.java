@@ -24,6 +24,7 @@ public class PropertyRepository {
     /*
      * Adds user to database and returns the automatically generated id.
      */
+    @Transactional
     public boolean save(Property property){
         boolean success = false;
 
@@ -84,8 +85,8 @@ public class PropertyRepository {
     @Transactional
     public void updateProperty(Property property){
         String updatePropertySql = "UPDATE \"property\" " +
-                "SET title = :title, location_id = :location_id, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = : room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, floor = :floor" +
-                "WHERE user_id = :id";
+                "SET title = :title, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = :room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, floor = :floor " +
+                "WHERE property_id = :id";
 
         Query updateUserQuery = entityManager.createNativeQuery(updatePropertySql);
         updateUserQuery.setParameter("title", property.getTitle());

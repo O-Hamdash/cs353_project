@@ -55,6 +55,7 @@ CREATE TABLE property
     price_per_night int,
     bathroom_number int,
     room_number     int,
+    type            varchar(255)    NOT NULL,
     owner_id        int                NOT NULL,
     city            varchar(255)       NOT NULL,
     district        varchar(255)       NOT NULL,
