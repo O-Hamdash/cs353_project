@@ -34,13 +34,18 @@ public class Property {
     @Column(name = "property_id")
     private Integer id;
     private String title;
-    private Integer location_id;
     private Integer max_people;
     private Integer room_number;
     private Integer bathroom_number;
     private String description;
     private Integer price_per_night;
     private Integer owner_id;
+    private String city;
+    private String district;
+    private String neighborhood;
+    private Integer buildingNo;
+    private Integer apartmentNo;
+    private Integer floor;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp added_date;
     @Enumerated(value = EnumType.STRING)
@@ -51,10 +56,9 @@ public class Property {
 
 
 
-    public Property(String title, Status status, Integer  location_id, Integer max_people, Integer bathroom_number, Integer room_number, String description, Integer  price_per_night, PropertyType type, Integer owner_id) {
+    public Property(String title, Status status, Integer max_people, Integer bathroom_number, Integer room_number, String description, Integer  price_per_night, PropertyType type, Integer owner_id) {
         this.title = title;
         this.status = Status.ACTIVE;
-        this.location_id =  location_id;
         this.max_people = max_people;
         this.description = description;
         this.price_per_night = price_per_night;
@@ -66,10 +70,8 @@ public class Property {
     }
 
     public Property(PropertyRequest propertyRequest) {
-        this.id = propertyRequest.getId();
         this.title = propertyRequest.getTitle();
         this.status = Status.ACTIVE;
-        this.location_id = propertyRequest.getLocation_id();
         this.max_people = propertyRequest.getMax_people();
         this.description = propertyRequest.getDescription();
         this.price_per_night = propertyRequest.getPrice_per_night();
@@ -78,5 +80,11 @@ public class Property {
         this.room_number = propertyRequest.getRoom_number();
         this.type = propertyRequest.getType();
         this.owner_id = propertyRequest.getOwner_id();
+        this.city = propertyRequest.getCity();
+        this.district = propertyRequest.getDistrict();
+        this.neighborhood = propertyRequest.getNeighborhood();
+        this.buildingNo = propertyRequest.getBuildingNo();
+        this.apartmentNo = propertyRequest.getApartmentNo();
+        this.floor = propertyRequest.getFloor();
     }
 }

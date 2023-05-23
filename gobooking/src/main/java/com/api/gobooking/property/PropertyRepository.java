@@ -28,13 +28,12 @@ public class PropertyRepository {
         boolean success = false;
 
         String propertySql = "INSERT INTO " +
-                "\"property\" (title, location_id, status, price_per_night, added_date, max_people, bathroom_number, room_number, description, type, owner_id) " +
-                "VALUES (:title, :location_id, :status, :price_per_night, :added_date, :max_people, :bathroom_number, :room_number, :description, :type, :owner_id)";
+                "\"property\" (title, status, price_per_night, added_date, max_people, bathroom_number, room_number, description, type, owner_id, city, district, neighborhood, building_no, apartment_no, floor) " +
+                "VALUES (:title, :status, :price_per_night, :added_date, :max_people, :bathroom_number, :room_number, :description, :type, :owner_id, :city, :district, :neighborhood, :building_no, :apartment_no, :floor)";
 
         Query propertyQuery = entityManager.createNativeQuery(propertySql);
 
         propertyQuery.setParameter("title", property.getTitle());
-        propertyQuery.setParameter("location_id", property.getLocation_id());
         propertyQuery.setParameter("status", property.getStatus().toString());
         propertyQuery.setParameter("price_per_night", property.getPrice_per_night());
         propertyQuery.setParameter("description", property.getDescription());
@@ -44,6 +43,12 @@ public class PropertyRepository {
         propertyQuery.setParameter("room_number", property.getRoom_number());
         propertyQuery.setParameter("type", property.getType().toString());
         propertyQuery.setParameter("owner_id", property.getOwner_id());
+        propertyQuery.setParameter("city", property.getCity());
+        propertyQuery.setParameter("district", property.getDistrict());
+        propertyQuery.setParameter("neighborhood", property.getNeighborhood());
+        propertyQuery.setParameter("building_no", property.getBuildingNo());
+        propertyQuery.setParameter("apartment_no", property.getApartmentNo());
+        propertyQuery.setParameter("floor", property.getFloor());
 
         propertyQuery.executeUpdate();
 
@@ -51,15 +56,6 @@ public class PropertyRepository {
 
         return success;
     }
-
-
-
-
-
-
-
-
-
 
     public List<Property> findAll(){
         String jpql = "SELECT p FROM Property p";
@@ -88,12 +84,11 @@ public class PropertyRepository {
     @Transactional
     public void updateProperty(Property property){
         String updatePropertySql = "UPDATE \"property\" " +
-                "SET title = :title, location_id = :location_id, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = : room_number, type = :type, owner_id = :owner_id " +
+                "SET title = :title, location_id = :location_id, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = : room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, floor = :floor" +
                 "WHERE user_id = :id";
 
         Query updateUserQuery = entityManager.createNativeQuery(updatePropertySql);
         updateUserQuery.setParameter("title", property.getTitle());
-        updateUserQuery.setParameter("location_id", property.getLocation_id());
         updateUserQuery.setParameter("status", property.getStatus().toString());
         updateUserQuery.setParameter("price_per_night", property.getPrice_per_night());
         updateUserQuery.setParameter("description", property.getDescription());
@@ -104,6 +99,12 @@ public class PropertyRepository {
         updateUserQuery.setParameter("type", property.getType().toString());
         updateUserQuery.setParameter("added_date", property.getAdded_date());
         updateUserQuery.setParameter("owner_id", property.getOwner_id());
+        updateUserQuery.setParameter("city", property.getCity());
+        updateUserQuery.setParameter("district", property.getDistrict());
+        updateUserQuery.setParameter("neighborhood", property.getNeighborhood());
+        updateUserQuery.setParameter("building_no", property.getBuildingNo());
+        updateUserQuery.setParameter("apartment_no", property.getApartmentNo());
+        updateUserQuery.setParameter("floor", property.getFloor());
 
         updateUserQuery.setParameter("id", property.getId());
 

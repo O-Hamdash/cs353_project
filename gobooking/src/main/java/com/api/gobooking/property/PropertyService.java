@@ -96,9 +96,6 @@ public class PropertyService {
         return success;
     }
 
-
-
-
     public void setStatus(Integer id,Status status ){
         Property property = getProperty(id);
 

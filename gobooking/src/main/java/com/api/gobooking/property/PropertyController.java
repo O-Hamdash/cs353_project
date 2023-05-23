@@ -33,7 +33,7 @@ public class PropertyController {
 
 
     @PutMapping(path = "{property_id}")
-    public void updateReview( @PathVariable("property_id") Integer id,
+    public void updateProperty( @PathVariable("property_id") Integer id,
                               @RequestParam(required = false) String title,
                               @RequestParam(required = false) Status status,
                               @RequestParam(required = false) String description

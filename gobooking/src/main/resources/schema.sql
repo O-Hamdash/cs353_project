@@ -50,33 +50,22 @@ CREATE TABLE property
     property_id     SERIAL PRIMARY KEY NOT NULL,
     title           varchar(255),
     status          varchar(255),
-    location_id     int,
     description     varchar(255),
     max_people      int,
     price_per_night int,
     bathroom_number int,
     room_number     int,
     owner_id        int                NOT NULL,
-    location_id     int                NOT NULL,
+    city            varchar(255)       NOT NULL,
+    district        varchar(255)       NOT NULL,
+    neighborhood    varchar(255)       NOT NULL,
+    building_no     int                 NOT NULL,
+    apartment_no    int                 NOT NULL,
+    floor           int                 NOT NULL,
     added_date      timestamp          NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES "user" (user_id)
         ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY (location_id) REFERENCES location (location_id)
-        ON DELETE CASCADE
         ON UPDATE CASCADE
-);
-
-CREATE TABLE location
-(
-    location_id        SERIAL NOT NULL,
-    city               varchar(255),
-    neighborhood       varchar(255),
-    road               varchar(255),
-    street             varchar(255),
-    longitude_latitude varchar(40),
-    description        varchar(255),
-    PRIMARY KEY (location_id)
 );
 
 CREATE TABLE booking
@@ -121,8 +110,8 @@ CREATE TABLE pays
 
 CREATE TABLE service
 (
+    property_id  int          PRIMARY KEY NOT NULL,
     service_name varchar(255) PRIMARY KEY NOT NULL,
-    property_id  int                      NOT NULL,
     FOREIGN KEY (property_id) REFERENCES property
         ON DELETE CASCADE
 );
