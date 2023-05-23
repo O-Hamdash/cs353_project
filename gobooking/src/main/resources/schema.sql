@@ -110,8 +110,9 @@ CREATE TABLE pays
 
 CREATE TABLE service
 (
-    property_id  int          PRIMARY KEY NOT NULL,
-    service_name varchar(255) PRIMARY KEY NOT NULL,
+    property_id  int    NOT NULL,
+    service_name varchar(255)   NOT NULL,
+    PRIMARY KEY (property_id, service_name),
     FOREIGN KEY (property_id) REFERENCES property
         ON DELETE CASCADE
 );
