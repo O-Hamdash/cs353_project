@@ -1,7 +1,11 @@
 package com.api.gobooking.review;
 
+import com.api.gobooking.property.Property;
+import com.api.gobooking.property.PropertyService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -11,7 +15,7 @@ import java.util.Optional;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-
+    private final PropertyService propertyService;
     public boolean reviewExists(Integer id) {
         return reviewRepository.findById(id).isPresent();
     }
@@ -90,6 +94,35 @@ public class ReviewService {
         Review review = optionalReview.get();
 
         reviewRepository.updateLikes(id, review.getLikes() + 1);
+
+        success = true;
+        return success;
+    }
+
+    public BigDecimal getReviewForProperty(Integer propertyId) {
+        propertyService.getProperty(propertyId);
+
+        return reviewRepository.getReviewFromProperty(propertyId);
+    }
+
+    // SortMode is 0 for sort by rating, and 1 for sort by likes
+    public List<Review> getReviewsByProperty(Integer propertyId, Integer sortMode) {
+        propertyService.getProperty(propertyId);
+
+        return reviewRepository.getReviewsByProperty(propertyId, sortMode);
+    }
+
+    public boolean decrementLikes(Integer id){
+        boolean success = false;
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+
+        if (optionalReview.isEmpty()){
+            throw new IllegalStateException(String.format("incrementLikes: Review with id (%s) does not exist", id));
+        }
+
+        Review review = optionalReview.get();
+
+        reviewRepository.updateLikes(id, review.getLikes() - 1);
 
         success = true;
         return success;

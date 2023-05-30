@@ -1,12 +1,11 @@
 package com.api.gobooking.review;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
@@ -107,4 +106,47 @@ public class ReviewRepository {
         query.executeUpdate();
     }
 
+    public BigDecimal getReviewFromProperty(Integer propertyId) {
+        String sql = "SELECT AVG(rating) AS average_rating " +
+                "FROM review " +
+                "WHERE booking_id IN ( " +
+                "    SELECT booking_id " +
+                "    FROM booking " +
+                "    WHERE property_id = :property_id " +
+                ");";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("property_id", propertyId);
+
+        BigDecimal averageRating = null;
+        try {
+            averageRating = (BigDecimal) query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new IllegalStateException("no reviews found for this property");
+        }
+
+        return averageRating;
+    }
+
+    // SortMode is 0 for sort by rating, and 1 for sort by likes
+    public List<Review> getReviewsByProperty(Integer propertyId, Integer sortMode) {
+        String sql = "select * from review where booking_id in (" +
+                "select booking_id from booking where property_id = :property_id) " +
+                "order by ";
+
+        if (sortMode == 1){
+            sql = sql + "likes desc";
+        } else if (sortMode == 2){
+            sql = sql + "review_date desc";
+        } else {
+            sql = sql + "rating desc";
+        }
+
+        Query query = entityManager.createNativeQuery(sql, Review.class);
+
+        query.setParameter("property_id", propertyId);
+
+        return query.getResultList();
+    }
 }
