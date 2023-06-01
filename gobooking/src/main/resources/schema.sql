@@ -154,7 +154,6 @@ ALTER TABLE "user" ADD CONSTRAINT unique_user_email UNIQUE (email);
 ALTER TABLE review ADD CONSTRAINT unique_review_per_booking UNIQUE (booking_id, reviewer_id);
 
 -- unique_property_owner assertion becomes a constraint in PostgreSQL
-ALTER TABLE property ADD CONSTRAINT unique_property_owner UNIQUE (owner_id);
 
 -- check_services assertion becomes a constraint in PostgreSQL
 ALTER TABLE service ADD CONSTRAINT check_services

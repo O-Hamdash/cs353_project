@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = Admin.class, name = "Admin"),
         @JsonSubTypes.Type(value = AppUser.class, name = "AppUser")}
 )
-@PrimaryKeyJoinColumn(name = "id")
+//@PrimaryKeyJoinColumn(name = "id")
 
 public class User {
     @Id

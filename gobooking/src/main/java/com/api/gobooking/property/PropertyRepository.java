@@ -51,6 +51,13 @@ public class PropertyRepository {
         propertyQuery.setParameter("building_no", property.getBuildingNo());
         propertyQuery.setParameter("apartment_no", property.getApartmentNo());
         propertyQuery.setParameter("floor", property.getFloor());
+        propertyQuery.setParameter("wifi", propertyRequest.getWifi());
+        propertyQuery.setParameter("kitchen", propertyRequest.getKitchen());
+        propertyQuery.setParameter("furnished", propertyRequest.getFurnished());
+        propertyQuery.setParameter("parking", propertyRequest.getParking());
+        propertyQuery.setParameter("ac", propertyRequest.getAc());
+        propertyQuery.setParameter("elevator", propertyRequest.getElevator());
+        propertyQuery.setParameter("fire_alarm", propertyRequest.getFire_alarm());
 
         propertyQuery.executeUpdate();
         //generatedId = (Integer) propertyQuery.getSingleResult();
@@ -120,41 +127,33 @@ public class PropertyRepository {
                 "SET title = :title, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = :room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, floor = :floor " +
                 "WHERE property_id = :id";
 
-        Query updateUserQuery = entityManager.createNativeQuery(updatePropertySql);
-        updateUserQuery.setParameter("title", property.getTitle());
-        updateUserQuery.setParameter("status", property.getStatus().toString());
-        updateUserQuery.setParameter("price_per_night", property.getPrice_per_night());
-        updateUserQuery.setParameter("description", property.getDescription());
-        updateUserQuery.setParameter("max_people", property.getMax_people());
-        updateUserQuery.setParameter("bathroom_number", property.getBathroom_number());
-        updateUserQuery.setParameter("bathroom_number", property.getBathroom_number());
-        updateUserQuery.setParameter("room_number", property.getRoom_number());
-        updateUserQuery.setParameter("type", property.getType().toString());
-        updateUserQuery.setParameter("added_date", property.getAdded_date());
-        updateUserQuery.setParameter("owner_id", property.getOwner_id());
-        updateUserQuery.setParameter("city", property.getCity());
-        updateUserQuery.setParameter("district", property.getDistrict());
-        updateUserQuery.setParameter("neighborhood", property.getNeighborhood());
-        updateUserQuery.setParameter("building_no", property.getBuildingNo());
-        updateUserQuery.setParameter("apartment_no", property.getApartmentNo());
-        updateUserQuery.setParameter("floor", property.getFloor());
-        updateUserQuery.setParameter("id", property.getId());
-        updateUserQuery.executeUpdate();
+        Query updatePropertyQuery = entityManager.createNativeQuery(updatePropertySql);
+        updatePropertyQuery.setParameter("title", propertyRequest.getTitle());
+        //updateUserQuery.setParameter("status", propertyRequest.getStatus().toString());
+        updatePropertyQuery.setParameter("price_per_night", propertyRequest.getPrice_per_night());
+        updatePropertyQuery.setParameter("description", propertyRequest.getDescription());
+        updatePropertyQuery.setParameter("max_people", propertyRequest.getMax_people());
+        updatePropertyQuery.setParameter("bathroom_number", propertyRequest.getBathroom_number());
+        updatePropertyQuery.setParameter("bathroom_number", propertyRequest.getBathroom_number());
+        updatePropertyQuery.setParameter("room_number", propertyRequest.getRoom_number());
+        updatePropertyQuery.setParameter("type", propertyRequest.getType().toString());
+        //updateUserQuery.setParameter("added_date", propertyRequest.getAdded_date());
+        updatePropertyQuery.setParameter("owner_id", propertyRequest.getOwner_id());
+        updatePropertyQuery.setParameter("city", propertyRequest.getCity());
+        updatePropertyQuery.setParameter("district", propertyRequest.getDistrict());
+        updatePropertyQuery.setParameter("neighborhood", propertyRequest.getNeighborhood());
+        updatePropertyQuery.setParameter("building_no", propertyRequest.getBuildingNo());
+        updatePropertyQuery.setParameter("apartment_no", propertyRequest.getApartmentNo());
+        updatePropertyQuery.setParameter("floor", propertyRequest.getFloor());
+        updatePropertyQuery.setParameter("wifi", propertyRequest.getWifi());
+        updatePropertyQuery.setParameter("kitchen", propertyRequest.getKitchen());
+        updatePropertyQuery.setParameter("furnished", propertyRequest.getFurnished());
+        updatePropertyQuery.setParameter("parking", propertyRequest.getParking());
+        updatePropertyQuery.setParameter("ac", propertyRequest.getAc());
+        updatePropertyQuery.setParameter("elevator", propertyRequest.getElevator());
+        updatePropertyQuery.setParameter("fire_alarm", propertyRequest.getFire_alarm());
 
-
-
-        String updatePropertyServicesSql = "UPDATE \"property\" " +
-                "SET wifi = :wifi, kitchen = :kitchen, furnished = :furnished, parking = :parking, ac = :ac, elevator = :elevator, fire_alarm = :fire_alarm" +
-                "WHERE property_id = :id";
-
-        Query updateServiceQuery = entityManager.createNativeQuery(updatePropertyServicesSql);
-        updateServiceQuery.setParameter("wifi", propertyRequest.getWifi());
-        updateServiceQuery.setParameter("kitchen", propertyRequest.getKitchen());
-        updateServiceQuery.setParameter("furnished", propertyRequest.getFurnished());
-        updateServiceQuery.setParameter("parking", propertyRequest.getParking());
-        updateServiceQuery.setParameter("ac", propertyRequest.getAc());
-        updateServiceQuery.setParameter("elevator", propertyRequest.getElevator());
-        updateServiceQuery.setParameter("fire_alarm", propertyRequest.getFire_alarm());
+        updatePropertyQuery.executeUpdate();
     }
 
     @Transactional

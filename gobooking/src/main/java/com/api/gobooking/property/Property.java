@@ -91,6 +91,12 @@ public class Property {
         this.neighborhood = propertyRequest.getNeighborhood();
         this.buildingNo = propertyRequest.getBuildingNo();
         this.apartmentNo = propertyRequest.getApartmentNo();
+        this.wifi = propertyRequest.getWifi();
+        this.kitchen = propertyRequest.getKitchen();
+        this.furnished = propertyRequest.getFurnished();
+        this.parking = propertyRequest.getParking();
+        this.ac = propertyRequest.getAc();
+        this.elevator = propertyRequest.getElevator();
         this.floor = propertyRequest.getFloor();
     }
 }
