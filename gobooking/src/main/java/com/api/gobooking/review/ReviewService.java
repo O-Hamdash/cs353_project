@@ -1,5 +1,7 @@
 package com.api.gobooking.review;
 
+import com.api.gobooking.http.TimeData;
+import com.api.gobooking.http.TimeDataDouble;
 import com.api.gobooking.property.Property;
 import com.api.gobooking.property.PropertyService;
 import lombok.AllArgsConstructor;
@@ -126,5 +128,9 @@ public class ReviewService {
 
         success = true;
         return success;
+    }
+
+    public List<TimeDataDouble> reviewAverageYear() {
+        return reviewRepository.reviewAverageYear();
     }
 }

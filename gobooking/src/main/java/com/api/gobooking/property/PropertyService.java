@@ -1,6 +1,7 @@
 package com.api.gobooking.property;
 
 
+import com.api.gobooking.http.DoubleTimeData;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -106,5 +107,9 @@ public class PropertyService {
 
     public List<PropertyResponse> getPropertiesSort(Integer sortMode) {
         return propertyRepository.getPropertiesSort(sortMode);
+    }
+
+    public List<DoubleTimeData> countProperty(Integer mode) {
+        return propertyRepository.countProperty(mode);
     }
 }

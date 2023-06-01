@@ -1,5 +1,7 @@
 package com.api.gobooking.review;
 
+import com.api.gobooking.http.TimeData;
+import com.api.gobooking.http.TimeDataDouble;
 import com.api.gobooking.user.appuser.AppUser;
 import com.api.gobooking.user.appuser.AppUserRequest;
 import lombok.AllArgsConstructor;
@@ -79,5 +81,10 @@ public class ReviewController {
     @PutMapping(path = "decrement_likes/{review_id}")
     public void decrementLikes(@PathVariable("review_id") Integer review_id){
         reviewService.decrementLikes(review_id);
+    }
+
+    @GetMapping(path = "review_average_year")
+    public List<TimeDataDouble> reviewAverageYear(){
+        return reviewService.reviewAverageYear();
     }
 }

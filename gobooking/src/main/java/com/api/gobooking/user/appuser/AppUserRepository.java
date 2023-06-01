@@ -1,12 +1,12 @@
 package com.api.gobooking.user.appuser;
 
 
-import com.api.gobooking.user.User;
+import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.TimeData;
 import com.api.gobooking.user.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 //import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -169,5 +170,52 @@ public class AppUserRepository {
     @Transactional
     public void deleteById(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    public List<NameValueResponse> topUserLocation() {
+        String sql = "SELECT " +
+                "    a.city AS name, " +
+                "    COALESCE(COUNT(a.user_id), 0) AS value " +
+                "FROM " +
+                "    app_user a " +
+                "GROUP BY " +
+                "    a.city " +
+                "HAVING " +
+                "    COALESCE(COUNT(a.user_id), 0) > 0 " +
+                "ORDER BY " +
+                "    value DESC";
+
+        Query query = entityManager.createNativeQuery(sql, NameValueResponse.class);
+
+        return query.getResultList();
+    }
+
+    public List<TimeData> countUsersYear() {
+        List<TimeData> result = new ArrayList<>();
+
+        ArrayList<String> times = new ArrayList<>();
+        times.add("today");
+        times.add("1");
+        for (int i = 2; i < 12; i++) {
+            times.add(String.format("%s", i));
+        }
+
+        String sql;
+        Query query = null;
+        TimeData timeData;
+        Integer number;
+        String s = "SELECT COUNT(*) AS user_count FROM app_user WHERE registration_date < CURRENT_DATE - INTERVAL '%s month'";
+        for (int i = 11; i >= 0; i--){
+            sql = String.format(s, i);
+
+            query = entityManager.createNativeQuery(sql);
+
+            number = ((Number) query.getSingleResult()).intValue();
+            timeData = new TimeData(times.get(i), number);
+
+            result.add(timeData);
+        }
+
+        return result;
     }
 }

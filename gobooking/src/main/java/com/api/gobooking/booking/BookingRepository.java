@@ -1,5 +1,6 @@
 package com.api.gobooking.booking;
 
+import com.api.gobooking.http.NameValueResponse;
 import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.appuser.AppUser;
 import jakarta.persistence.EntityManager;
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.awt.desktop.QuitEvent;
 import java.util.List;
 
 @AllArgsConstructor
@@ -112,5 +114,22 @@ public class BookingRepository {
         Query selectQuery = entityManager.createNativeQuery(selectSql, Booking.class);
 
         return selectQuery.getResultList();
+    }
+
+    public List<NameValueResponse> mostBookedCities() {
+        String sql = "select " +
+                "   property.city as name, " +
+                "   COALESCE(count(booking.booking_id), 0) as value " +
+                "from " +
+                "   property " +
+                "LEFT JOIN " +
+                "booking ON property.property_id = booking.property_id " +
+                "group by property.city " +
+                "having COALESCE(count(booking.booking_id), 0) > 0 " +
+                "order by value desc";
+
+        Query query = entityManager.createNativeQuery(sql, NameValueResponse.class);
+
+        return query.getResultList();
     }
 }

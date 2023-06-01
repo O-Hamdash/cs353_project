@@ -1,5 +1,7 @@
 package com.api.gobooking.user.appuser;
 
+import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.TimeData;
 import com.api.gobooking.user.User;
 import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.UserService;
@@ -7,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -158,5 +159,13 @@ public class AppUserService {
         appUserRepository.updateTaxNumber(id, taxNumber);
 
         return true;
+    }
+
+    public List<NameValueResponse> topUserLocation() {
+        return appUserRepository.topUserLocation();
+    }
+
+    public List<TimeData> countUsersYear() {
+        return appUserRepository.countUsersYear();
     }
 }

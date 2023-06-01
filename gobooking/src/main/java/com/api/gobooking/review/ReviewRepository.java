@@ -1,5 +1,7 @@
 package com.api.gobooking.review;
 
+import com.api.gobooking.http.TimeData;
+import com.api.gobooking.http.TimeDataDouble;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -148,5 +151,34 @@ public class ReviewRepository {
         query.setParameter("property_id", propertyId);
 
         return query.getResultList();
+    }
+
+    public List<TimeDataDouble> reviewAverageYear() {
+        List<TimeDataDouble> result = new ArrayList<>();
+
+        ArrayList<String> times = new ArrayList<>();
+        times.add("today");
+        times.add("1");
+        for (int i = 2; i < 12; i++) {
+            times.add(String.format("%s", i));
+        }
+
+        String sql;
+        Query query = null;
+        TimeDataDouble timeData;
+        Double number;
+        String s = "SELECT COALESCE(avg(rating), 0) AS avg_rating FROM review WHERE review_date < CURRENT_DATE - INTERVAL '%s month'";
+        for (int i = 11; i >= 0; i--){
+            sql = String.format(s, i);
+
+            query = entityManager.createNativeQuery(sql);
+
+            number = ((Number) query.getSingleResult()).doubleValue();
+            timeData = new TimeDataDouble(times.get(i), number);
+
+            result.add(timeData);
+        }
+
+        return result;
     }
 }
