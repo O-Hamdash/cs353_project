@@ -1,12 +1,13 @@
 package com.api.gobooking.user;
 
+import com.api.gobooking.user.appuser.AppUserRequest;
+import com.api.gobooking.user.appuser.AppUserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("gobooking/user")
@@ -14,7 +15,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class UserController {
     private final UserService userService;
-
+    private final AppUserService appUserService;
     @GetMapping
     public List<User> getUsers(){
         return userService.getUsers();
@@ -47,15 +48,17 @@ public class UserController {
                          @RequestParam("birthdate") String birthdate,
                          @RequestParam("email") String email,
                          @RequestParam("password") String password,
+                         @RequestParam("city") String city,
                          HttpSession session){
 
-        User u = userService.getUserByEmail(email);
-        if (u != null) {
+        if (userService.getUserByEmail(email) != null) {
             // User with the same email already exists, redirect back to signup page with an error message
             return "redirect:/signup?error=emailExists";
         }
 
-        // Create a new user
+        // Create a new appUserRequest
+        AppUserRequest appUserRequest = new AppUserRequest(name, surname, email, password, Timestamp.valueOf(birthdate), 0.0, city);
+
         User newUser = new User();
         newUser.setName(name);
         newUser.setSurname(surname);
@@ -65,8 +68,8 @@ public class UserController {
         newUser.setRole(Role.APP_USER);
 
         // Save the new user to the database
-        userService.saveUser(newUser);
-
+        //userService.saveUser(newUser);
+        appUserService.addAppUser(appUserRequest);
         // Set user information in session
         session.setAttribute("userId", newUser.getId());
 
