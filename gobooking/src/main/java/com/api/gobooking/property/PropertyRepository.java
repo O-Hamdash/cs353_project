@@ -25,12 +25,13 @@ public class PropertyRepository {
      * Adds user to database and returns the automatically generated id.
      */
     @Transactional
-    public boolean save(Property property){
+    public boolean save(Property property, PropertyRequest propertyRequest){
         boolean success = false;
+        Integer generatedId = null;
 
         String propertySql = "INSERT INTO " +
-                "\"property\" (title, status, price_per_night, added_date, max_people, bathroom_number, room_number, description, type, owner_id, city, district, neighborhood, building_no, apartment_no, floor) " +
-                "VALUES (:title, :status, :price_per_night, :added_date, :max_people, :bathroom_number, :room_number, :description, :type, :owner_id, :city, :district, :neighborhood, :building_no, :apartment_no, :floor)";
+                "\"property\" (title, status, price_per_night, added_date, max_people, bathroom_number, room_number, description, type, owner_id, city, district, neighborhood, building_no, apartment_no, wifi, kitchen, furnished, parking, ac, elevator, fire_alarm, floor) " +
+                "VALUES (:title, :status, :price_per_night, :added_date, :max_people, :bathroom_number, :room_number, :description, :type, :owner_id, :city, :district, :neighborhood, :building_no, :apartment_no, :wifi, :kitchen, :furnished, :parking, :ac, :elevator, :fire_alarm, :floor)";
 
         Query propertyQuery = entityManager.createNativeQuery(propertySql);
 
@@ -52,11 +53,49 @@ public class PropertyRepository {
         propertyQuery.setParameter("floor", property.getFloor());
 
         propertyQuery.executeUpdate();
-
+        //generatedId = (Integer) propertyQuery.getSingleResult();
         success = true;
-
         return success;
     }
+
+
+
+    public boolean saveServices(Integer id, String service){
+        String serviceSql = "INSERT INTO " +
+                "\"service\" (property_id, service_name) " +
+                "VALUES (:property_id, :service_name)";
+
+        Query serviceQuery = entityManager.createNativeQuery(serviceSql);
+
+        serviceQuery.setParameter("property_id", id);
+        serviceQuery.setParameter("service_name", service);
+
+        serviceQuery.executeUpdate();
+
+        return true;
+    }
+
+    public boolean saveServices(Integer id, Boolean[] list){
+        String serviceSql = "INSERT INTO " +
+                "\"service\" (property_id, service_name) " +
+                "VALUES (:property_id, :service_name)";
+
+        Query serviceQuery = entityManager.createNativeQuery(serviceSql);
+
+        serviceQuery.setParameter("property_id", id);
+        serviceQuery.setParameter("service_name", list[0]);
+        serviceQuery.setParameter("service_name", list[1]);
+        serviceQuery.setParameter("service_name", list[2]);
+        serviceQuery.setParameter("service_name", list[3]);
+        serviceQuery.setParameter("service_name", list[4]);
+        serviceQuery.setParameter("service_name", list[5]);
+        serviceQuery.setParameter("service_name", list[6]);
+
+        serviceQuery.executeUpdate();
+
+        return true;
+    }
+
 
     public List<Property> findAll(){
         String jpql = "SELECT p FROM Property p";
@@ -73,17 +112,10 @@ public class PropertyRepository {
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 
-    /*public Optional<Property> findByEmail(String email){
-        String jpql = "SELECT p FROM Property p WHERE p.email = :email";
-        TypedQuery<Property> query = entityManager.createQuery(jpql, Property.class);
-        query.setParameter("email", email);
 
-        List<Property> resultList = query.getResultList();
-        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
-    }*/
 
     @Transactional
-    public void updateProperty(Property property){
+    public void updateProperty(Property property, PropertyRequest propertyRequest){
         String updatePropertySql = "UPDATE \"property\" " +
                 "SET title = :title, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = :room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, floor = :floor " +
                 "WHERE property_id = :id";
@@ -106,10 +138,23 @@ public class PropertyRepository {
         updateUserQuery.setParameter("building_no", property.getBuildingNo());
         updateUserQuery.setParameter("apartment_no", property.getApartmentNo());
         updateUserQuery.setParameter("floor", property.getFloor());
-
         updateUserQuery.setParameter("id", property.getId());
-
         updateUserQuery.executeUpdate();
+
+
+
+        String updatePropertyServicesSql = "UPDATE \"property\" " +
+                "SET wifi = :wifi, kitchen = :kitchen, furnished = :furnished, parking = :parking, ac = :ac, elevator = :elevator, fire_alarm = :fire_alarm" +
+                "WHERE property_id = :id";
+
+        Query updateServiceQuery = entityManager.createNativeQuery(updatePropertyServicesSql);
+        updateServiceQuery.setParameter("wifi", propertyRequest.getWifi());
+        updateServiceQuery.setParameter("kitchen", propertyRequest.getKitchen());
+        updateServiceQuery.setParameter("furnished", propertyRequest.getFurnished());
+        updateServiceQuery.setParameter("parking", propertyRequest.getParking());
+        updateServiceQuery.setParameter("ac", propertyRequest.getAc());
+        updateServiceQuery.setParameter("elevator", propertyRequest.getElevator());
+        updateServiceQuery.setParameter("fire_alarm", propertyRequest.getFire_alarm());
     }
 
     @Transactional

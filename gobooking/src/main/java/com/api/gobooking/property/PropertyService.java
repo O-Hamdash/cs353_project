@@ -34,23 +34,10 @@ public class PropertyService {
         return propertyRepository.findById(id).get();
     }
 
-    public void setPrice(Integer id, Integer price){
-        Property property = getProperty(id);
-
-        property.setPrice_per_night(price);
-
-        propertyRepository.updateProperty(property);
-    }
-
-
-
-
-
     public boolean addProperty(PropertyRequest propertyRequest){
         boolean success = false;
         Property property = new Property(propertyRequest);
-        propertyRepository.save(property);
-        success = true;
+        success =propertyRepository.save(property, propertyRequest);
         return success;
     }
 
@@ -63,13 +50,11 @@ public class PropertyService {
         }
 
         propertyRepository.deleteById(id);
-
         success = true;
         return success;
     }
 
-
-    public boolean updateProperty(Integer id, String title, Status status, String description){
+    public boolean updateProperty(Integer id, PropertyRequest propertyRequest){
         boolean success = false;
         Optional<Property> optionalReview = propertyRepository.findById(id);
 
@@ -78,29 +63,8 @@ public class PropertyService {
         }
 
         Property property = optionalReview.get();
-
-        if (title != null){
-            property.setTitle(title);
-        }
-        if (status != null){
-            property.setStatus(status);
-        }
-        if (description != null){
-            property.setDescription(description);
-        }
-
-
-        propertyRepository.updateProperty(property);
-
+        propertyRepository.updateProperty(property, propertyRequest);
         success = true;
         return success;
-    }
-
-    public void setStatus(Integer id,Status status ){
-        Property property = getProperty(id);
-
-        property.setStatus(status);
-
-        propertyRepository.updateProperty(property);
     }
 }

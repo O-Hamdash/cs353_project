@@ -22,5 +22,12 @@ public class PropertyRequest {
     private String neighborhood;
     private Integer buildingNo;
     private Integer apartmentNo;
+    private Boolean wifi;
+    private Boolean kitchen;
+    private Boolean furnished;
+    private Boolean parking;
+    private Boolean ac;
+    private Boolean elevator;
+    private Boolean fire_alarm;
     private Integer floor;
 }

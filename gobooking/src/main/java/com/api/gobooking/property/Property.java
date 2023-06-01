@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 
 @PrimaryKeyJoinColumn(name = "id")
-
 public class Property {
     @Id
     @Column(name = "property_id")
@@ -46,6 +45,13 @@ public class Property {
     private Integer buildingNo;
     private Integer apartmentNo;
     private Integer floor;
+    private Boolean wifi;
+    private Boolean kitchen;
+    private Boolean furnished;
+    private Boolean parking;
+    private Boolean ac;
+    private Boolean elevator;
+    private Boolean fire_alarm;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp added_date;
     @Enumerated(value = EnumType.STRING)

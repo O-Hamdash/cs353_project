@@ -30,6 +30,8 @@ CREATE TABLE admin
         ON DELETE CASCADE
 );
 
+
+
 CREATE TABLE app_user
 (
     user_id                int       NOT NULL,
@@ -64,6 +66,13 @@ CREATE TABLE property
     apartment_no    int                 NOT NULL,
     floor           int                 NOT NULL,
     added_date      timestamp          NOT NULL,
+    wifi            boolean,
+    kitchen         boolean,
+    furnished       boolean,
+    parking         boolean,
+    ac              boolean,
+    elevator        boolean,
+    fire_alarm      boolean,
     FOREIGN KEY (owner_id) REFERENCES "user" (user_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
@@ -108,16 +117,6 @@ CREATE TABLE pays
     FOREIGN KEY (booking_id) REFERENCES booking (booking_id)
         ON DELETE CASCADE
 );
-
-CREATE TABLE service
-(
-    property_id  int    NOT NULL,
-    service_name varchar(255)   NOT NULL,
-    PRIMARY KEY (property_id, service_name),
-    FOREIGN KEY (property_id) REFERENCES property
-        ON DELETE CASCADE
-);
-
 
 -- Assertions & additional constraints
 -- no Assertion in PostgreSQL, use Rule instead

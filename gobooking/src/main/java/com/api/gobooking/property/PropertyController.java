@@ -25,27 +25,20 @@ public class PropertyController {
         return propertyService.getProperty(propertyId);
     }
 
-
     @DeleteMapping(path = "{property_id}")
     public void deleteProperty(@PathVariable("property_id") Integer property_id){
         propertyService.deleteProperty(property_id);
     }
 
-
     @PutMapping(path = "{property_id}")
     public void updateProperty( @PathVariable("property_id") Integer id,
-                              @RequestParam(required = false) String title,
-                              @RequestParam(required = false) Status status,
-                              @RequestParam(required = false) String description
-    )
+                              PropertyRequest propertyRequest)
     {
-        propertyService.updateProperty(id, title, status, description);
+        propertyService.updateProperty(id, propertyRequest);
     }
 
     @PostMapping
     public void addNewProperty(@RequestBody PropertyRequest propertyRequest){
         propertyService.addProperty(propertyRequest);
     }
-
-
 }
