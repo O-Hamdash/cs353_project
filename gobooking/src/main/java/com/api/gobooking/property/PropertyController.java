@@ -21,13 +21,18 @@ public class PropertyController {
     }
 
     @GetMapping(path = "sort_by_rating")
-    public List<Property> getPropertiesSortByRating(){
+    public List<PropertyResponse> getPropertiesSortByRating(){
         return propertyService.getPropertiesSort(1);
     }
 
     @GetMapping(path = "sort_by_date")
-    public List<Property> getPropertiesSortByDate(){
+    public List<PropertyResponse> getPropertiesSortByDate(){
         return propertyService.getPropertiesSort(2);
+    }
+
+    @GetMapping(path = "sort_by_booked")
+    public List<PropertyResponse> getPropertiesSortByBooked(){
+        return propertyService.getPropertiesSort(3);
     }
 
     @GetMapping(path = "{propertyId}")

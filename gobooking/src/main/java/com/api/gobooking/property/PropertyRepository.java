@@ -120,21 +120,80 @@ public class PropertyRepository {
         query.executeUpdate();
     }
 
-    public List<Property> getPropertiesSort(Integer sortMode) {
-        String sql = "select p " +
-                "from property p, booking b, " +
-                "(select ra.booking_id, avg(ra.rating) as av from review ra group by ra.booking_id) as booking_avg " +
-                "where p.property_id = b.property_id " +
-                "   and b.booking_id = booking_avg.booking_id " +
-                "order by ";
+    public List<PropertyResponse> getPropertiesSort(Integer sortMode) {
+        String sql = "select * from property";
 
         if (sortMode == 1){
-            sql = sql + "booking_avg.av desc";
+            sql = "SELECT " +
+                    "   property.property_id as property_id, " +
+                    "   property.title as title, " +
+                    "   property.description as description, " +
+                    "   property.owner_id as owner_id, " +
+                    "   (select name from \"user\" where user_id = property.owner_id) as owner_name, " +
+                    "   (select surname from \"user\" where user_id = property.owner_id) as owner_surname, " +
+                    "   property.city as city, " +
+                    "   property.district as district, " +
+                    "   property.neighborhood as neighborhood, " +
+                    "   property.added_date as added_date, " +
+                    "   COALESCE(AVG(review.rating), 0) AS avg_rating, " +
+                    "   0 as times_booked " +
+                    "FROM " +
+                    "    property " +
+                    "LEFT JOIN " +
+                    "    booking ON property.property_id = booking.property_id " +
+                    "LEFT JOIN " +
+                    "    review ON booking.booking_id = review.booking_id " +
+                    "GROUP BY " +
+                    "    property.property_id " +
+                    "having COALESCE(AVG(review.rating), 0) > 0 " +
+                    "ORDER BY " +
+                    "    avg_rating desc " +
+                    " limit 5";
         } else if (sortMode == 2){
-            sql = sql + "p.added_date desc";
+            sql = "SELECT " +
+                    "   property.property_id as property_id, " +
+                    "   property.title as title, " +
+                    "   property.description as description, " +
+                    "   property.owner_id as owner_id, " +
+                    "   (select name from \"user\" where user_id = property.owner_id) as owner_name, " +
+                    "   (select surname from \"user\" where user_id = property.owner_id) as owner_surname, " +
+                    "   property.city as city, " +
+                    "   property.district as district, " +
+                    "   property.neighborhood as neighborhood, " +
+                    "   property.added_date as added_date, " +
+                    "   0 as avg_rating, " +
+                    "   0 as times_booked " +
+                    "FROM property " +
+                    "ORDER BY " +
+                    "   property.added_date desc " +
+                    "limit 5";
+        } else if (sortMode == 3){
+            sql = "SELECT " +
+                    "   property.property_id as property_id, " +
+                    "   property.title as title, " +
+                    "   property.description as description, " +
+                    "   property.owner_id as owner_id, " +
+                    "   (select name from \"user\" where user_id = property.owner_id) as owner_name, " +
+                    "   (select surname from \"user\" where user_id = property.owner_id) as owner_surname, " +
+                    "   property.city as city, " +
+                    "   property.district as district, " +
+                    "   property.neighborhood as neighborhood, " +
+                    "   property.added_date as added_date, " +
+                    "   0 AS avg_rating, " +
+                    "   COALESCE(count(booking.property_id), 0) as times_booked " +
+                    "FROM " +
+                    "    property " +
+                    "LEFT JOIN " +
+                    "    booking ON property.property_id = booking.property_id " +
+                    "GROUP BY " +
+                    "    property.property_id " +
+                    "having COALESCE(COUNT(booking.property_id), 0) > 0 " +
+                    "ORDER BY " +
+                    "    times_booked desc " +
+                    " limit 5 ";
         }
 
-        Query query = entityManager.createNativeQuery(sql, Property.class);
+        Query query = entityManager.createNativeQuery(sql, PropertyResponse.class);
 
         return query.getResultList();
     }
