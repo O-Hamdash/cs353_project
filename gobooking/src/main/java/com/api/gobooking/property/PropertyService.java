@@ -103,4 +103,8 @@ public class PropertyService {
 
         propertyRepository.updateProperty(property);
     }
+
+    public List<Property> getPropertiesSort(Integer sortMode) {
+        return propertyRepository.getPropertiesSort(sortMode);
+    }
 }

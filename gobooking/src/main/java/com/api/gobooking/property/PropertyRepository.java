@@ -119,4 +119,23 @@ public class PropertyRepository {
         query.setParameter("id", id);
         query.executeUpdate();
     }
+
+    public List<Property> getPropertiesSort(Integer sortMode) {
+        String sql = "select p " +
+                "from property p, booking b, " +
+                "(select ra.booking_id, avg(ra.rating) as av from review ra group by ra.booking_id) as booking_avg " +
+                "where p.property_id = b.property_id " +
+                "   and b.booking_id = booking_avg.booking_id " +
+                "order by ";
+
+        if (sortMode == 1){
+            sql = sql + "booking_avg.av desc";
+        } else if (sortMode == 2){
+            sql = sql + "p.added_date desc";
+        }
+
+        Query query = entityManager.createNativeQuery(sql, Property.class);
+
+        return query.getResultList();
+    }
 }

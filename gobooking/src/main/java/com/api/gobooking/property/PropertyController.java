@@ -20,6 +20,16 @@ public class PropertyController {
         return propertyService.getProperties();
     }
 
+    @GetMapping(path = "sort_by_rating")
+    public List<Property> getPropertiesSortByRating(){
+        return propertyService.getPropertiesSort(1);
+    }
+
+    @GetMapping(path = "sort_by_date")
+    public List<Property> getPropertiesSortByDate(){
+        return propertyService.getPropertiesSort(2);
+    }
+
     @GetMapping(path = "{propertyId}")
     public Property getPropertyById(@PathVariable(name = "propertyId") int propertyId){
         return propertyService.getProperty(propertyId);

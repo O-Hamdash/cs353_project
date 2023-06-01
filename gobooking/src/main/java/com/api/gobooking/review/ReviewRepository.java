@@ -129,7 +129,7 @@ public class ReviewRepository {
         return averageRating;
     }
 
-    // SortMode is 0 for sort by rating, and 1 for sort by likes
+    // SortMode is 0 for sort by rating, 1 for sort by likes, and 2 for date
     public List<Review> getReviewsByProperty(Integer propertyId, Integer sortMode) {
         String sql = "select * from review where booking_id in (" +
                 "select booking_id from booking where property_id = :property_id) " +
