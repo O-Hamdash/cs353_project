@@ -119,25 +119,59 @@ public class PropertyRepository {
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 
+    public List<Property> findByPropertyOwnerId(Integer id){
+        String jpql = "SELECT p FROM Property p WHERE p.owner_id = :id";
+        TypedQuery<Property> query = entityManager.createQuery(jpql, Property.class);
+        query.setParameter("id", id);
+
+        List<Property> resultList = query.getResultList();
+        return query.getResultList();
+    }
+
+    public boolean isPropertyExistByOwnerId(Integer id){
+        boolean result = true;
+        String jpql = "SELECT p FROM Property p WHERE p.owner_id = :id";
+        TypedQuery<Property> query = entityManager.createQuery(jpql, Property.class);
+        query.setParameter("id", id);
+
+        List<Property> resultList = query.getResultList();
+        if (resultList.isEmpty()){
+            result = false;
+        }
+        return result;
+    }
 
 
     @Transactional
-    public void updateProperty(Property property, PropertyRequest propertyRequest){
+    public void updateProperty(Property property, PropertyRequest propertyRequest) {
         String updatePropertySql = "UPDATE \"property\" " +
-                "SET title = :title, status = :status, added_date = :added_date, description = :description, price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, room_number = :room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, floor = :floor " +
+                "SET title = :title, description = :description, " +
+                "price_per_night = :price_per_night, max_people = :max_people, bathroom_number = :bathroom_number, " +
+                "room_number = :room_number, type = :type, owner_id = :owner_id, city = :city, district = :district, " +
+                "neighborhood = :neighborhood, building_no = :building_no, apartment_no = :apartment_no, " +
+                "wifi = :wifi, kitchen = :kitchen, furnished = :furnished, parking = :parking, ac = :ac, " +
+                "elevator = :elevator, fire_alarm = :fire_alarm, floor = :floor " +
                 "WHERE property_id = :id";
 
         Query updatePropertyQuery = entityManager.createNativeQuery(updatePropertySql);
         updatePropertyQuery.setParameter("title", propertyRequest.getTitle());
-        //updateUserQuery.setParameter("status", propertyRequest.getStatus().toString());
+        //updatePropertyQuery.setParameter("status", propertyRequest.getStatus().toString()); // Assuming status is not null
         updatePropertyQuery.setParameter("price_per_night", propertyRequest.getPrice_per_night());
         updatePropertyQuery.setParameter("description", propertyRequest.getDescription());
         updatePropertyQuery.setParameter("max_people", propertyRequest.getMax_people());
         updatePropertyQuery.setParameter("bathroom_number", propertyRequest.getBathroom_number());
-        updatePropertyQuery.setParameter("bathroom_number", propertyRequest.getBathroom_number());
         updatePropertyQuery.setParameter("room_number", propertyRequest.getRoom_number());
-        updatePropertyQuery.setParameter("type", propertyRequest.getType().toString());
-        //updateUserQuery.setParameter("added_date", propertyRequest.getAdded_date());
+        //updatePropertyQuery.setParameter("type", propertyRequest.getType().toString()); // Assuming type is not null
+        //updatePropertyQuery.setParameter("added_date", propertyRequest.getAdded_date());
+
+        if (propertyRequest.getType() != null) {
+            updatePropertyQuery.setParameter("type", propertyRequest.getType().toString());
+        } else {
+            // Handle the case when the type is null
+            // You can either set a default value or throw an exception
+            // For example, setting it to an empty string:
+            updatePropertyQuery.setParameter("type", "");
+        }
         updatePropertyQuery.setParameter("owner_id", propertyRequest.getOwner_id());
         updatePropertyQuery.setParameter("city", propertyRequest.getCity());
         updatePropertyQuery.setParameter("district", propertyRequest.getDistrict());
@@ -152,6 +186,7 @@ public class PropertyRepository {
         updatePropertyQuery.setParameter("ac", propertyRequest.getAc());
         updatePropertyQuery.setParameter("elevator", propertyRequest.getElevator());
         updatePropertyQuery.setParameter("fire_alarm", propertyRequest.getFire_alarm());
+        updatePropertyQuery.setParameter("id", property.getId()); // Bind the ID parameter
 
         updatePropertyQuery.executeUpdate();
     }

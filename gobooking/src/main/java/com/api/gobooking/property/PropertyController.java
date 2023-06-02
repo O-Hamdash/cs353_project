@@ -20,9 +20,19 @@ public class PropertyController {
         return propertyService.getProperties();
     }
 
+    @GetMapping(path = "doesownerhaveproperty/{propertyId}")
+    public boolean doesOwnerHaveProperty(@PathVariable(name = "propertyId") int propertyId){
+        return propertyService.propertyExistsbyOwnerId(propertyId);
+    }
+
     @GetMapping(path = "{propertyId}")
     public Property getPropertyById(@PathVariable(name = "propertyId") int propertyId){
         return propertyService.getProperty(propertyId);
+    }
+
+    @GetMapping(path = "getbyownerid/{ownerId}")
+    public List<Property> getPropertyByOwnerId(@PathVariable(name = "ownerId") int ownerId){
+        return propertyService.getPropertyByOId(ownerId);
     }
 
     @DeleteMapping(path = "{property_id}")
@@ -32,7 +42,7 @@ public class PropertyController {
 
     @PutMapping(path = "{property_id}")
     public void updateProperty( @PathVariable("property_id") Integer id,
-                              PropertyRequest propertyRequest)
+                                @RequestBody PropertyRequest propertyRequest)
     {
         propertyService.updateProperty(id, propertyRequest);
     }

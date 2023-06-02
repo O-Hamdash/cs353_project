@@ -1,6 +1,7 @@
 package com.api.gobooking.property;
 
 
+import com.api.gobooking.user.UserService;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,9 +17,13 @@ import java.util.Optional;
 @Service
 public class PropertyService {
     private final PropertyRepository propertyRepository;
+    private final UserService userService;
 
     public boolean propertyExists(Integer id){
         return propertyRepository.findById(id).isPresent();
+    }
+    public boolean propertyExistsbyOwnerId(Integer id){
+        return (!propertyRepository.findByPropertyOwnerId(id).isEmpty());
     }
 
     public List<Property> getProperties(){
@@ -32,6 +37,15 @@ public class PropertyService {
         }
 
         return propertyRepository.findById(id).get();
+    }
+
+    public List<Property> getPropertyByOId(Integer id){
+
+        if (!userService.userExists(id)){//UserExists
+            throw new IllegalStateException(String.format("getProperty: property with id (%s) does not exist", id));
+        }
+
+        return propertyRepository.findByPropertyOwnerId(id);
     }
 
     public boolean addProperty(PropertyRequest propertyRequest){
