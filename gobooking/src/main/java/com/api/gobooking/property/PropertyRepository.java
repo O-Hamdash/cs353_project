@@ -204,15 +204,18 @@ public class PropertyRepository {
     public List<DoubleTimeData> countProperty(Integer mode) {
         Integer count = null;
         String interval = null;
-        if (mode == 1){
+        if (mode == 3){
             count = 12;
             interval = "month";
         }else if (mode == 2){
             count = 30;
             interval = "day";
-        }else if (mode == 3){
+        }else if (mode == 1){
             count = 7;
             interval = "day";
+        }else if (mode == 4){
+            count = 5;
+            interval = "year";
         }
 
         List<DoubleTimeData> result = new ArrayList<>();

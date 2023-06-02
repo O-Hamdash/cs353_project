@@ -83,8 +83,8 @@ public class ReviewController {
         reviewService.decrementLikes(review_id);
     }
 
-    @GetMapping(path = "review_average_year")
-    public List<TimeDataDouble> reviewAverageYear(){
-        return reviewService.reviewAverageYear();
+    @GetMapping(path = "review_average={mode}")
+    public List<TimeDataDouble> reviewAverageYear(@PathVariable("mode") Integer mode){
+        return reviewService.reviewAverageYear(mode);
     }
 }

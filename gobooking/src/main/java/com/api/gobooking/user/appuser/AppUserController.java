@@ -82,8 +82,8 @@ public class AppUserController {
         return appUserService.topUserLocation();
     }
 
-    @GetMapping(path = "count_users_year")
-    public List<TimeData> countUsersYear(){
-        return appUserService.countUsersYear();
+    @GetMapping(path = "count_users={mode}")
+    public List<TimeData> countUsersYear(@PathVariable("mode") Integer mode){
+        return appUserService.countUsers(mode);
     }
 }

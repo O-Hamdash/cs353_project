@@ -15,5 +15,5 @@ import lombok.Setter;
 public class TimeDataDouble {
     @Id
     private String time;
-    private Double value;
+    private Double rating;
 }

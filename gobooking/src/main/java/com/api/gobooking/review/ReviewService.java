@@ -130,7 +130,7 @@ public class ReviewService {
         return success;
     }
 
-    public List<TimeDataDouble> reviewAverageYear() {
-        return reviewRepository.reviewAverageYear();
+    public List<TimeDataDouble> reviewAverageYear(Integer mode) {
+        return reviewRepository.reviewAverageYear(mode);
     }
 }

@@ -190,13 +190,29 @@ public class AppUserRepository {
         return query.getResultList();
     }
 
-    public List<TimeData> countUsersYear() {
+    public List<TimeData> countUsers(Integer mode) {
+        Integer count = null;
+        String interval = null;
+        if (mode == 3){
+            count = 12;
+            interval = "month";
+        }else if (mode == 2){
+            count = 30;
+            interval = "day";
+        }else if (mode == 1){
+            count = 7;
+            interval = "day";
+        }else if (mode == 4){
+            count = 5;
+            interval = "year";
+        }
+
         List<TimeData> result = new ArrayList<>();
 
         ArrayList<String> times = new ArrayList<>();
         times.add("today");
         times.add("1");
-        for (int i = 2; i < 12; i++) {
+        for (int i = 2; i < count; i++) {
             times.add(String.format("%s", i));
         }
 
@@ -204,9 +220,9 @@ public class AppUserRepository {
         Query query = null;
         TimeData timeData;
         Integer number;
-        String s = "SELECT COUNT(*) AS user_count FROM app_user WHERE registration_date < CURRENT_DATE - INTERVAL '%s month'";
-        for (int i = 11; i >= 0; i--){
-            sql = String.format(s, i);
+        String s = "SELECT COUNT(*) AS user_count FROM app_user WHERE registration_date < CURRENT_DATE - INTERVAL '%s %s'";
+        for (int i = count - 1; i >= 0; i--){
+            sql = String.format(s, i, interval);
 
             query = entityManager.createNativeQuery(sql);
 

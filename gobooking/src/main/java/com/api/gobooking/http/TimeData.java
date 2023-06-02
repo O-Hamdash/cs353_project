@@ -15,5 +15,5 @@ import lombok.Setter;
 public class TimeData {
     @Id
     private String time;
-    private Integer value;
+    private Integer users;
 }

@@ -165,7 +165,7 @@ public class AppUserService {
         return appUserRepository.topUserLocation();
     }
 
-    public List<TimeData> countUsersYear() {
-        return appUserRepository.countUsersYear();
+    public List<TimeData> countUsers(Integer mode) {
+        return appUserRepository.countUsers(mode);
     }
 }
