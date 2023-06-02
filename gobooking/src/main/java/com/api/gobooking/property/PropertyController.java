@@ -1,6 +1,5 @@
 package com.api.gobooking.property;
 
-import com.api.gobooking.user.appuser.AppUserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +44,11 @@ public class PropertyController {
     @PostMapping
     public void addNewProperty(@RequestBody PropertyRequest propertyRequest){
         propertyService.addProperty(propertyRequest);
+    }
+
+    @PutMapping(path = "update_rating/{property_id}")
+    public void updateRating(@PathVariable("property_id") Integer property_id, @RequestParam Double rating){
+        propertyService.updateRating(property_id, rating);
     }
 
 

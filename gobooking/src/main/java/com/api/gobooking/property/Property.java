@@ -46,6 +46,7 @@ public class Property {
     private Integer buildingNo;
     private Integer apartmentNo;
     private Integer floor;
+    private Double rating;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp added_date;
     @Enumerated(value = EnumType.STRING)

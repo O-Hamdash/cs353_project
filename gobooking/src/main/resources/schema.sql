@@ -62,6 +62,7 @@ CREATE TABLE property
     neighborhood    varchar(255)       NOT NULL,
     building_no     int                 NOT NULL,
     apartment_no    int                 NOT NULL,
+    rating          double precision,
     floor           int                 NOT NULL,
     added_date      timestamp          NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES "user" (user_id)

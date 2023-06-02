@@ -1,6 +1,5 @@
 package com.api.gobooking.property;
 
-//import com.api.gobooking.user.appuser.AppUser;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -117,6 +116,20 @@ public class PropertyRepository {
         String sql = "DELETE FROM \"property\" WHERE property_id = :id";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Transactional
+    public void updateRating(Integer id, Double rating){
+        String sql = "UPDATE \"property\" " +
+                "SET rating = :rating " +
+                "WHERE property_id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("rating", rating);
+
         query.executeUpdate();
     }
 }
