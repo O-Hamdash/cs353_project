@@ -71,6 +71,9 @@ CREATE TABLE property
     furnished       boolean,
     parking         boolean,
     ac              boolean,
+    rating          double precision,
+    start_date      timestamp,
+    end_date        timestamp,
     elevator        boolean,
     fire_alarm      boolean,
     FOREIGN KEY (owner_id) REFERENCES "user" (user_id)

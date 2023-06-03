@@ -1,8 +1,12 @@
 package com.api.gobooking.property;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -30,4 +34,7 @@ public class PropertyRequest {
     private Boolean elevator;
     private Boolean fire_alarm;
     private Integer floor;
+    private Double rating;
+    private Timestamp start_date;
+    private Timestamp end_date;
 }

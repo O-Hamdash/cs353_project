@@ -52,6 +52,11 @@ public class Property {
     private Boolean ac;
     private Boolean elevator;
     private Boolean fire_alarm;
+    private Double rating;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp start_date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp end_date;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp added_date;
     @Enumerated(value = EnumType.STRING)
@@ -98,5 +103,7 @@ public class Property {
         this.ac = propertyRequest.getAc();
         this.elevator = propertyRequest.getElevator();
         this.floor = propertyRequest.getFloor();
+        this.start_date = propertyRequest.getStart_date();
+        this.end_date = propertyRequest.getEnd_date();
     }
 }

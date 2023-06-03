@@ -30,8 +30,8 @@ public class PropertyRepository {
         Integer generatedId = null;
 
         String propertySql = "INSERT INTO " +
-                "\"property\" (title, status, price_per_night, added_date, max_people, bathroom_number, room_number, description, type, owner_id, city, district, neighborhood, building_no, apartment_no, wifi, kitchen, furnished, parking, ac, elevator, fire_alarm, floor) " +
-                "VALUES (:title, :status, :price_per_night, :added_date, :max_people, :bathroom_number, :room_number, :description, :type, :owner_id, :city, :district, :neighborhood, :building_no, :apartment_no, :wifi, :kitchen, :furnished, :parking, :ac, :elevator, :fire_alarm, :floor)";
+                "\"property\" (title, status, price_per_night, added_date, max_people, bathroom_number, room_number, description, type, owner_id, city, district, neighborhood, building_no, apartment_no, wifi, kitchen, furnished, parking, ac, elevator, fire_alarm, end_date, start_date, floor) " +
+                "VALUES (:title, :status, :price_per_night, :added_date, :max_people, :bathroom_number, :room_number, :description, :type, :owner_id, :city, :district, :neighborhood, :building_no, :apartment_no, :wifi, :kitchen, :furnished, :parking, :ac, :elevator, :fire_alarm, :end_date, :start_date, :floor)";
 
         Query propertyQuery = entityManager.createNativeQuery(propertySql);
 
@@ -58,6 +58,8 @@ public class PropertyRepository {
         propertyQuery.setParameter("ac", propertyRequest.getAc());
         propertyQuery.setParameter("elevator", propertyRequest.getElevator());
         propertyQuery.setParameter("fire_alarm", propertyRequest.getFire_alarm());
+        propertyQuery.setParameter("start_date", propertyRequest.getStart_date());
+        propertyQuery.setParameter("end_date", propertyRequest.getEnd_date());
 
         propertyQuery.executeUpdate();
         //generatedId = (Integer) propertyQuery.getSingleResult();
