@@ -72,7 +72,6 @@ CREATE TABLE property
     furnished       boolean,
     parking         boolean,
     ac              boolean,
-    rating          double precision,
     start_date      timestamp,
     end_date        timestamp,
     elevator        boolean,
