@@ -85,7 +85,7 @@ public class ReviewService {
         return success;
     }
 
-    public boolean incrementLikes(Integer id){
+    public boolean incrementLikes(Integer id, Integer userId){
         boolean success = false;
         Optional<Review> optionalReview = reviewRepository.findById(id);
 
@@ -95,7 +95,8 @@ public class ReviewService {
 
         Review review = optionalReview.get();
 
-        reviewRepository.updateLikes(id, review.getLikes() + 1);
+        int mode = 1;
+        reviewRepository.updateLikes(id, userId, review.getLikes() + 1, mode);
 
         success = true;
         return success;
@@ -114,7 +115,7 @@ public class ReviewService {
         return reviewRepository.getReviewsByProperty(propertyId, sortMode);
     }
 
-    public boolean decrementLikes(Integer id){
+    public boolean decrementLikes(Integer id, Integer userId){
         boolean success = false;
         Optional<Review> optionalReview = reviewRepository.findById(id);
 
@@ -124,7 +125,8 @@ public class ReviewService {
 
         Review review = optionalReview.get();
 
-        reviewRepository.updateLikes(id, review.getLikes() - 1);
+        int mode = 2;
+        reviewRepository.updateLikes(id, userId, review.getLikes() - 1, mode);
 
         success = true;
         return success;
@@ -132,5 +134,9 @@ public class ReviewService {
 
     public List<TimeDataDouble> reviewAverageYear(Integer mode) {
         return reviewRepository.reviewAverageYear(mode);
+    }
+
+    public Boolean isLiked(Integer reviewId, Integer userId) {
+        return reviewRepository.isLiked(reviewId, userId);
     }
 }

@@ -80,15 +80,30 @@ public class ReviewRepository {
     }
 
     @Transactional
-    public void updateLikes(Integer id, Integer likes){
+    public void updateLikes(Integer reviewId, Integer reviewerId, Integer likes, int mode){
         String sql = "UPDATE review " +
                 "SET likes = :likes " +
                 "WHERE review_id = :review_id";
 
         Query query = entityManager.createNativeQuery(sql);
 
-        query.setParameter("review_id", id);
+        query.setParameter("review_id", reviewId);
         query.setParameter("likes", likes);
+
+        query.executeUpdate();
+
+        if (mode == 1){
+            sql = "INSERT INTO likes (review_id, user_id) " +
+                    "VALUES (:review_id, :user_id)";
+        } else if (mode == 2){
+            sql = "DELETE FROM likes " +
+                    "WHERE review_id = :review_id AND user_id = :user_id";
+        }
+
+        query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("review_id", reviewId);
+        query.setParameter("user_id", reviewerId);
 
         query.executeUpdate();
     }
@@ -196,5 +211,21 @@ public class ReviewRepository {
         }
 
         return result;
+    }
+
+    public Boolean isLiked(Integer reviewId, Integer userId) {
+        String sql = "SELECT EXISTS ( " +
+                "    SELECT 1 " +
+                "    FROM likes " +
+                "    WHERE review_id = :review_id " +
+                "        AND user_id = :user_id " +
+                ")";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("review_id", reviewId);
+        query.setParameter("user_id", userId);
+
+        return (Boolean) query.getSingleResult();
     }
 }

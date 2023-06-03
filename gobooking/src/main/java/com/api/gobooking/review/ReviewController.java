@@ -73,18 +73,23 @@ public class ReviewController {
         reviewService.updateReview(review_id, rating, review_title, review_body);
     }
 
-    @PutMapping(path = "update_likes/{review_id}")
-    public void updateLikes(@PathVariable("review_id") Integer review_id){
-        reviewService.incrementLikes(review_id);
+    @PutMapping(path = "update_likes/{review_id}/{user_id}")
+    public void updateLikes(@PathVariable("review_id") Integer review_id, @PathVariable("user_id") Integer userId){
+        reviewService.incrementLikes(review_id, userId);
     }
 
-    @PutMapping(path = "decrement_likes/{review_id}")
-    public void decrementLikes(@PathVariable("review_id") Integer review_id){
-        reviewService.decrementLikes(review_id);
+    @PutMapping(path = "decrement_likes/{review_id}/{user_id}")
+    public void decrementLikes(@PathVariable("review_id") Integer review_id, @PathVariable("user_id") Integer userId){
+        reviewService.decrementLikes(review_id, userId);
     }
 
     @GetMapping(path = "review_average={mode}")
     public List<TimeDataDouble> reviewAverageYear(@PathVariable("mode") Integer mode){
         return reviewService.reviewAverageYear(mode);
+    }
+
+    @GetMapping(path ="isLiked/{review_id}/{user_id}")
+    public Boolean isLiked(@PathVariable("review_id") Integer reviewId, @PathVariable("user_id") Integer userId){
+        return reviewService.isLiked(reviewId, userId);
     }
 }
