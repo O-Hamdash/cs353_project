@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 
 @PrimaryKeyJoinColumn(name = "id")
-
 public class Property {
     @Id
     @Column(name = "property_id")
@@ -46,6 +45,18 @@ public class Property {
     private Integer buildingNo;
     private Integer apartmentNo;
     private Integer floor;
+    private Boolean wifi;
+    private Boolean kitchen;
+    private Boolean furnished;
+    private Boolean parking;
+    private Boolean ac;
+    private Boolean elevator;
+    private Boolean fire_alarm;
+    private Double rating;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp start_date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp end_date;
     private Double rating;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp added_date;
@@ -86,6 +97,14 @@ public class Property {
         this.neighborhood = propertyRequest.getNeighborhood();
         this.buildingNo = propertyRequest.getBuildingNo();
         this.apartmentNo = propertyRequest.getApartmentNo();
+        this.wifi = propertyRequest.getWifi();
+        this.kitchen = propertyRequest.getKitchen();
+        this.furnished = propertyRequest.getFurnished();
+        this.parking = propertyRequest.getParking();
+        this.ac = propertyRequest.getAc();
+        this.elevator = propertyRequest.getElevator();
         this.floor = propertyRequest.getFloor();
+        this.start_date = propertyRequest.getStart_date();
+        this.end_date = propertyRequest.getEnd_date();
     }
 }

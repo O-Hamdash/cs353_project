@@ -1,6 +1,7 @@
 package com.api.gobooking.property;
 
 
+import com.api.gobooking.user.UserService;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,9 +16,13 @@ import java.util.Optional;
 @Service
 public class PropertyService {
     private final PropertyRepository propertyRepository;
+    private final UserService userService;
 
     public boolean propertyExists(Integer id){
         return propertyRepository.findById(id).isPresent();
+    }
+    public boolean propertyExistsbyOwnerId(Integer id){
+        return (!propertyRepository.findByPropertyOwnerId(id).isEmpty());
     }
 
     public List<Property> getProperties(){
@@ -33,23 +38,19 @@ public class PropertyService {
         return propertyRepository.findById(id).get();
     }
 
-    public void setPrice(Integer id, Integer price){
-        Property property = getProperty(id);
+    public List<Property> getPropertyByOId(Integer id){
 
-        property.setPrice_per_night(price);
+        if (!userService.userExists(id)){//UserExists
+            throw new IllegalStateException(String.format("getProperty: property with id (%s) does not exist", id));
+        }
 
-        propertyRepository.updateProperty(property);
+        return propertyRepository.findByPropertyOwnerId(id);
     }
-
-
-
-
 
     public boolean addProperty(PropertyRequest propertyRequest){
         boolean success = false;
         Property property = new Property(propertyRequest);
-        propertyRepository.save(property);
-        success = true;
+        success =propertyRepository.save(property, propertyRequest);
         return success;
     }
 
@@ -62,13 +63,11 @@ public class PropertyService {
         }
 
         propertyRepository.deleteById(id);
-
         success = true;
         return success;
     }
 
-
-    public boolean updateProperty(Integer id, String title, Status status, String description){
+    public boolean updateProperty(Integer id, PropertyRequest propertyRequest){
         boolean success = false;
         Optional<Property> optionalReview = propertyRepository.findById(id);
 
@@ -77,20 +76,7 @@ public class PropertyService {
         }
 
         Property property = optionalReview.get();
-
-        if (title != null){
-            property.setTitle(title);
-        }
-        if (status != null){
-            property.setStatus(status);
-        }
-        if (description != null){
-            property.setDescription(description);
-        }
-
-
-        propertyRepository.updateProperty(property);
-
+        propertyRepository.updateProperty(property, propertyRequest);
         success = true;
         return success;
     }
@@ -114,4 +100,5 @@ public class PropertyService {
 
         return true;
     }
+
 }
