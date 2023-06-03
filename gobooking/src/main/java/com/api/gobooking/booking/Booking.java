@@ -28,4 +28,6 @@ public class Booking {
 
     private int property_id;
 
+    private int total_price;
+
 }
