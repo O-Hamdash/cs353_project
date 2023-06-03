@@ -1,6 +1,7 @@
 package com.api.gobooking.booking;
 
 import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.StayingData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,5 +83,10 @@ public class BookingController {
     @GetMapping(path = "most_booked_cities")
     public List<NameValueResponse> mostBookedCities(){
         return bookingService.mostBookedCities();
+    }
+
+    @GetMapping(path = "staying_data")
+    public List<StayingData> getStayingData(){
+        return bookingService.getStayingData();
     }
 }

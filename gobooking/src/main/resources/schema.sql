@@ -177,7 +177,7 @@ ALTER TABLE service ADD CONSTRAINT check_services
 
 -- valid_booking_status assertion becomes a constraint postgresql
 ALTER TABLE booking ADD CONSTRAINT valid_booking_status
-    CHECK ( status IN ('blocked', 'booked', 'available'));
+    CHECK ( status IN ('blocked', 'booked', 'available', 'completed'));
 
 
 

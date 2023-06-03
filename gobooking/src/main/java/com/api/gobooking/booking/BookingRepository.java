@@ -1,6 +1,7 @@
 package com.api.gobooking.booking;
 
 import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.StayingData;
 import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.appuser.AppUser;
 import jakarta.persistence.EntityManager;
@@ -129,6 +130,22 @@ public class BookingRepository {
                 "order by value desc";
 
         Query query = entityManager.createNativeQuery(sql, NameValueResponse.class);
+
+        return query.getResultList();
+    }
+
+    public List<StayingData> getStayingData() {
+        String sql = "select " +
+                "   property.city, COALESCE(CAST(AVG(EXTRACT(day FROM (booking.end_date - booking.start_date))) AS double precision), 0) AS days " +
+                "from " +
+                "   property " +
+                "left join " +
+                "   booking on property.property_id = booking.property_id " +
+                "where booking.status = 'completed'" +
+                "group by property.city " +
+                "order by days desc ";
+
+        Query query = entityManager.createNativeQuery(sql, StayingData.class);
 
         return query.getResultList();
     }

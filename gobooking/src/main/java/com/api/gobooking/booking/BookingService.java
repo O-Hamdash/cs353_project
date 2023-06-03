@@ -1,6 +1,7 @@
 package com.api.gobooking.booking;
 
 import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.StayingData;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.expression.spel.ast.NullLiteral;
@@ -59,5 +60,9 @@ public class BookingService {
 
     public List<NameValueResponse> mostBookedCities() {
         return bookingRepository.mostBookedCities();
+    }
+
+    public List<StayingData> getStayingData() {
+        return bookingRepository.getStayingData();
     }
 }
