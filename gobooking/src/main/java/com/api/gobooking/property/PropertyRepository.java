@@ -332,6 +332,7 @@ public class PropertyRepository {
         }
 
         return result;
+    }
 
     @Transactional
     public void updateRating(Integer id, Double rating){

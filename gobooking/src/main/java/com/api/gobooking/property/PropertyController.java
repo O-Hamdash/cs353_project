@@ -35,6 +35,7 @@ public class PropertyController {
     @GetMapping(path = "sort_by_booked")
     public List<PropertyResponse> getPropertiesSortByBooked(){
         return propertyService.getPropertiesSort(3);
+    }
 
     @GetMapping(path = "doesownerhaveproperty/{propertyId}")
     public boolean doesOwnerHaveProperty(@PathVariable(name = "propertyId") int propertyId){

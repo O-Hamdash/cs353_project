@@ -59,7 +59,6 @@ public class Property {
     private Timestamp start_date;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp end_date;
-    private Double rating;
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp added_date;
     @Enumerated(value = EnumType.STRING)

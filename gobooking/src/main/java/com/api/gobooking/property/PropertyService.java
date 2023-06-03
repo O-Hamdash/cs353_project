@@ -81,14 +81,6 @@ public class PropertyService {
         return success;
     }
 
-    public void setStatus(Integer id,Status status ){
-        Property property = getProperty(id);
-
-        property.setStatus(status);
-
-        propertyRepository.updateProperty(property);
-    }
-
 
     public List<PropertyResponse> getPropertiesSort(Integer sortMode) {
         return propertyRepository.getPropertiesSort(sortMode);

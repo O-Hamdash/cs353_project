@@ -1,4 +1,6 @@
 CREATE DATABASE gobooking
+    LC_COLLATE = 'en_US.utf8'
+    LC_CTYPE = 'en_US.utf8'
     OWNER = postgres;
 
 -- Note: In PostgreSQL, the USE statement is not needed since each query runs in its own transaction and can reference any database,
@@ -130,6 +132,9 @@ CREATE TABLE pays
         ON DELETE CASCADE
 );
 
+-- TRIGGERS & their functions
+CREATE LANGUAGE plpgsql;
+
 -- Assertions & additional constraints
 -- no Assertion in PostgreSQL, use Rule instead
 
@@ -137,13 +142,13 @@ CREATE OR REPLACE FUNCTION check_booking_overlap()
     RETURNS TRIGGER AS $$
 BEGIN
     IF EXISTS (
-        SELECT *
-        FROM booking
-        WHERE property_id = NEW.property_id
-          AND status <> 'cancelled'
-          AND ((NEW.start_date <= start_date AND NEW.end_date > start_date)
-            OR (NEW.start_date >= start_date AND end_date > NEW.start_date))
-    ) THEN
+            SELECT *
+            FROM booking
+            WHERE property_id = NEW.property_id
+              AND status <> 'cancelled'
+              AND ((NEW.start_date <= start_date AND NEW.end_date > start_date)
+                OR (NEW.start_date >= start_date AND end_date > NEW.start_date))
+        ) THEN
         -- Print the message
         RAISE NOTICE 'Booking overlaps with existing bookings';
         -- Return NULL to prevent the insertion
@@ -157,7 +162,7 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER before_insert_check_booking_overlap
     BEFORE INSERT ON booking
     FOR EACH ROW
-    EXECUTE FUNCTION check_booking_overlap();
+EXECUTE FUNCTION check_booking_overlap();
 
 -- unique_user_email assertion becomes a constraint in PostgreSQL
 ALTER TABLE "user" ADD CONSTRAINT unique_user_email UNIQUE (email);
@@ -167,22 +172,9 @@ ALTER TABLE review ADD CONSTRAINT unique_review_per_booking UNIQUE (booking_id, 
 
 -- unique_property_owner assertion becomes a constraint in PostgreSQL
 
--- check_services assertion becomes a constraint in PostgreSQL
-ALTER TABLE service ADD CONSTRAINT check_services
-    CHECK (service_name IN ('Wi - Fi', 'Security',
-                            'Breakfast', 'Sea View',
-                            'Kitchen', 'Play Ground',
-                            'Park', 'Garden', 'Organic Life'));
-
 -- valid_booking_status assertion becomes a constraint postgresql
 ALTER TABLE booking ADD CONSTRAINT valid_booking_status
     CHECK ( status IN ('blocked', 'booked', 'available', 'completed'));
-
-
-
--- TRIGGERS & their functions
---CREATE LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION delete_reviews()
     RETURNS TRIGGER AS $$
