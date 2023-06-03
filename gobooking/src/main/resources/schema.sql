@@ -89,6 +89,7 @@ CREATE TABLE booking
     status      varchar(255),
     booker_id   int                NOT NULL,
     property_id int                NOT NULL,
+    total_price int NOT NULL,
     FOREIGN KEY (booker_id) REFERENCES app_user (user_id)
         ON DELETE CASCADE,
     FOREIGN KEY (property_id) REFERENCES property (property_id)
