@@ -1,6 +1,4 @@
 CREATE DATABASE gobooking
-    LC_COLLATE = 'en_US.utf8'
-    LC_CTYPE = 'en_US.utf8'
     OWNER = postgres;
 
 -- Note: In PostgreSQL, the USE statement is not needed since each query runs in its own transaction and can reference any database,
@@ -183,7 +181,7 @@ ALTER TABLE booking ADD CONSTRAINT valid_booking_status
 
 
 -- TRIGGERS & their functions
-CREATE LANGUAGE plpgsql;
+--CREATE LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION delete_reviews()

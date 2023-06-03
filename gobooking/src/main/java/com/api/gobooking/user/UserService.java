@@ -20,6 +20,8 @@ public class UserService {
         return userRepository.findById(id).isPresent();
     }
 
+    public boolean userExists(String email){return userRepository.findByEmail(email).isPresent(); }
+
     public List<User> getUsers(){
         return userRepository.findAll();
     }
@@ -31,6 +33,16 @@ public class UserService {
         }
 
         return userRepository.findById(id).get();
+    }
+
+    public int saveUser(User user){
+        return userRepository.save(user);
+    }
+    public User getUserByEmail(String email){
+        if (!userExists(email)){
+            return null;
+        }
+        return userRepository.findByEmail(email).get();
     }
 
     public void setPassword(Integer id, String password){

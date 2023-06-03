@@ -24,6 +24,7 @@ public class UserRepository {
     /*
      * Adds user to database and returns the automatically generated id.
      */
+    @Transactional
     public int save(User user){
         String userSql = "INSERT INTO " +
                 "\"user\" (name, surname, email, password, birth_date, role) " +

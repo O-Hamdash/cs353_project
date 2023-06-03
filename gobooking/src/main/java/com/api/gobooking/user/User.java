@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -35,6 +33,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @Column(name = "user_id")
+    @GeneratedValue
     private Integer id;
     private String name;
     private String surname;
