@@ -68,6 +68,11 @@ public class AppUserController {
         appUserService.updateBalance(appUserId, balance);
     }
 
+    @PutMapping(path = "add_to_balance/{appUserId}")
+    public void addToBalance(@PathVariable("appUserId") Integer appUserId, @RequestParam Double balance){
+        appUserService.addToBalance(appUserId, balance);
+    }
+
     @PutMapping(path = "update_city/{appUserId}")
     public void updateCity(@PathVariable("appUserId") Integer appUserId, @RequestParam String city){
         appUserService.updateCity(appUserId, city);

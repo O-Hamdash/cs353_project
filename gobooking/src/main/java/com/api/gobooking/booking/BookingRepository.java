@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,8 +25,8 @@ public class BookingRepository {
     public boolean insert(Booking booking){
 
         String bookingSql = "INSERT INTO " +
-                "booking (start_date, end_date, status,property_id,booker_id) " +
-                "VALUES (:start_date, :end_date, :status,:property_id,:booker_id)";
+                "booking (start_date, end_date, status,booker_id,property_id,total_price) " +
+                "VALUES (:start_date, :end_date, :status,:booker_id,:property_id,:total_price)";
 
         Query bookingQuery = entityManager.createNativeQuery(bookingSql);
 
@@ -35,6 +36,7 @@ public class BookingRepository {
         bookingQuery.setParameter("status", booking.getStatus());
         bookingQuery.setParameter("property_id", booking.getProperty_id());
         bookingQuery.setParameter("booker_id", booking.getBooker_id());
+        bookingQuery.setParameter("total_price", booking.getTotal_price());
 
         int rowsAffected = bookingQuery.executeUpdate();
 
@@ -102,6 +104,18 @@ public class BookingRepository {
         Query selectQuery = entityManager.createNativeQuery(selectSql, Booking.class);
 
         selectQuery.setParameter("id", property_id);
+
+        return selectQuery.getResultList();
+    }
+
+
+    public List<Booking> findPastBookingsByBookerId(int bookerId) {
+        String selectSql = "SELECT * FROM booking " +
+                "WHERE booker_id = :bookerId AND end_date < CURRENT_TIMESTAMP";
+
+        Query selectQuery = entityManager.createNativeQuery(selectSql, Booking.class);
+
+        selectQuery.setParameter("bookerId", bookerId);
 
         return selectQuery.getResultList();
     }

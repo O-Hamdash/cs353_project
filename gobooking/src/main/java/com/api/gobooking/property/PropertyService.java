@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -81,4 +80,25 @@ public class PropertyService {
         success = true;
         return success;
     }
+
+    public void setStatus(Integer id,Status status ){
+        Property property = getProperty(id);
+
+        property.setStatus(status);
+
+        propertyRepository.updateProperty(property);
+    }
+
+    public boolean updateRating(Integer id, Double rating){
+        Optional<Property> optionalProperty = propertyRepository.findById(id);
+
+        if (optionalProperty.isEmpty()){
+            throw new IllegalStateException(String.format("updateBalance: AppUser with id (%s) does not exist", id));
+        }
+
+        propertyRepository.updateRating(id, rating);
+
+        return true;
+    }
+
 }

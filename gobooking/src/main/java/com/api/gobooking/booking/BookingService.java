@@ -1,25 +1,42 @@
 package com.api.gobooking.booking;
 
+import com.api.gobooking.user.appuser.AppUser;
+import com.api.gobooking.user.appuser.AppUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class BookingService {
 
     private BookingRepository bookingRepository;
+    private AppUserRepository appUserRepository;
 
     // Constructor
 
     @Transactional
-    public boolean createBooking(Booking booking) {
+    public int createBooking(Booking booking) {
+        Optional<AppUser> booker = appUserRepository.findById(booking.getBooker_id());
+        double current_account = booker.get().getBalance();
 
+        if(current_account<booking.getTotal_price())
+            return 2;
 
-        return bookingRepository.insert(booking);
+        if(bookingRepository.insert(booking)){
+            appUserRepository.updateBalance(booking.getBooker_id(), (current_account-(double) booking.getTotal_price()));
+            return 0;
+
+        }
+
+        else{
+
+            return 1;
+        }
 
 
     }
@@ -49,6 +66,10 @@ public class BookingService {
     public List<Booking> findAllBookingByPropertyId(int property_id) {
 
         return bookingRepository.findAllByPropertyId(property_id);
+    }
+
+    public List<Booking> findPastBookingsByBookerId(int bookerId) {
+        return bookingRepository.findPastBookingsByBookerId(bookerId);
     }
 
     public List<Booking> findAllBookings() {
