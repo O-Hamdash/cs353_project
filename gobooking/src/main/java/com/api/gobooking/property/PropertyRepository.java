@@ -1,5 +1,7 @@
 package com.api.gobooking.property;
 
+import com.api.gobooking.http.DoubleTimeData;
+import com.api.gobooking.http.TimeData;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -200,6 +203,136 @@ public class PropertyRepository {
         query.executeUpdate();
     }
 
+
+    public List<PropertyResponse> getPropertiesSort(Integer sortMode) {
+        String sql = "select * from property";
+
+        if (sortMode == 1){
+            sql = "SELECT " +
+                    "   property.property_id as property_id, " +
+                    "   property.title as title, " +
+                    "   property.description as description, " +
+                    "   property.owner_id as owner_id, " +
+                    "   (select name from \"user\" where user_id = property.owner_id) as owner_name, " +
+                    "   (select surname from \"user\" where user_id = property.owner_id) as owner_surname, " +
+                    "   property.city as city, " +
+                    "   property.district as district, " +
+                    "   property.neighborhood as neighborhood, " +
+                    "   property.added_date as added_date, " +
+                    "   COALESCE(AVG(review.rating), 0) AS avg_rating, " +
+                    "   0 as times_booked " +
+                    "FROM " +
+                    "    property " +
+                    "LEFT JOIN " +
+                    "    booking ON property.property_id = booking.property_id " +
+                    "LEFT JOIN " +
+                    "    review ON booking.booking_id = review.booking_id " +
+                    "GROUP BY " +
+                    "    property.property_id " +
+                    "having COALESCE(AVG(review.rating), 0) > 0 " +
+                    "ORDER BY " +
+                    "    avg_rating desc " +
+                    " limit 5";
+        } else if (sortMode == 2){
+            sql = "SELECT " +
+                    "   property.property_id as property_id, " +
+                    "   property.title as title, " +
+                    "   property.description as description, " +
+                    "   property.owner_id as owner_id, " +
+                    "   (select name from \"user\" where user_id = property.owner_id) as owner_name, " +
+                    "   (select surname from \"user\" where user_id = property.owner_id) as owner_surname, " +
+                    "   property.city as city, " +
+                    "   property.district as district, " +
+                    "   property.neighborhood as neighborhood, " +
+                    "   property.added_date as added_date, " +
+                    "   0 as avg_rating, " +
+                    "   0 as times_booked " +
+                    "FROM property " +
+                    "ORDER BY " +
+                    "   property.added_date desc " +
+                    "limit 5";
+        } else if (sortMode == 3){
+            sql = "SELECT " +
+                    "   property.property_id as property_id, " +
+                    "   property.title as title, " +
+                    "   property.description as description, " +
+                    "   property.owner_id as owner_id, " +
+                    "   (select name from \"user\" where user_id = property.owner_id) as owner_name, " +
+                    "   (select surname from \"user\" where user_id = property.owner_id) as owner_surname, " +
+                    "   property.city as city, " +
+                    "   property.district as district, " +
+                    "   property.neighborhood as neighborhood, " +
+                    "   property.added_date as added_date, " +
+                    "   0 AS avg_rating, " +
+                    "   COALESCE(count(booking.property_id), 0) as times_booked " +
+                    "FROM " +
+                    "    property " +
+                    "LEFT JOIN " +
+                    "    booking ON property.property_id = booking.property_id " +
+                    "GROUP BY " +
+                    "    property.property_id " +
+                    "having COALESCE(COUNT(booking.property_id), 0) > 0 " +
+                    "ORDER BY " +
+                    "    times_booked desc " +
+                    " limit 5 ";
+        }
+
+        Query query = entityManager.createNativeQuery(sql, PropertyResponse.class);
+
+        return query.getResultList();
+    }
+
+    public List<DoubleTimeData> countProperty(Integer mode) {
+        Integer count = null;
+        String interval = null;
+        if (mode == 3){
+            count = 12;
+            interval = "month";
+        }else if (mode == 2){
+            count = 30;
+            interval = "day";
+        }else if (mode == 1){
+            count = 7;
+            interval = "day";
+        }else if (mode == 4){
+            count = 5;
+            interval = "year";
+        }
+
+        List<DoubleTimeData> result = new ArrayList<>();
+
+        ArrayList<String> times = new ArrayList<>();
+        times.add("today");
+        times.add("1");
+        for (int i = 2; i < count; i++) {
+            times.add(String.format("%s", i));
+        }
+
+        String sql1;
+        String sql2;
+        Query query1 = null;
+        Query query2 = null;
+        DoubleTimeData timeData;
+        Integer ads;
+        Integer bookings;
+        String s1 = "SELECT COUNT(*) AS property_count FROM property WHERE added_date < CURRENT_DATE - INTERVAL '%s %s'";
+        String s2 = "SELECT COUNT(*) AS booking_count FROM booking WHERE start_date < CURRENT_DATE - INTERVAL '%s %s'";
+        for (int i = count - 1; i >= 0; i--){
+            sql1 = String.format(s1, i, interval);
+            sql2 = String.format(s2, i, interval);
+
+            query1 = entityManager.createNativeQuery(sql1);
+            query2 = entityManager.createNativeQuery(sql2);
+
+            ads = ((Number) query1.getSingleResult()).intValue();
+            bookings = ((Number) query2.getSingleResult()).intValue();
+            timeData = new DoubleTimeData(times.get(i), ads, bookings);
+
+            result.add(timeData);
+        }
+
+        return result;
+
     @Transactional
     public void updateRating(Integer id, Double rating){
         String sql = "UPDATE \"property\" " +
@@ -212,5 +345,6 @@ public class PropertyRepository {
         query.setParameter("rating", rating);
 
         query.executeUpdate();
+
     }
 }

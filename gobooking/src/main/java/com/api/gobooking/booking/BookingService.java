@@ -1,5 +1,6 @@
 package com.api.gobooking.booking;
-
+import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.StayingData;
 import com.api.gobooking.user.appuser.AppUser;
 import com.api.gobooking.user.appuser.AppUserRepository;
 import jakarta.transaction.Transactional;
@@ -75,5 +76,13 @@ public class BookingService {
     public List<Booking> findAllBookings() {
 
         return bookingRepository.findAll();
+    }
+
+    public List<NameValueResponse> mostBookedCities() {
+        return bookingRepository.mostBookedCities();
+    }
+
+    public List<StayingData> getStayingData() {
+        return bookingRepository.getStayingData();
     }
 }

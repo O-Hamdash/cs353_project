@@ -1,5 +1,7 @@
 package com.api.gobooking.property;
 
+import com.api.gobooking.http.DoubleTimeData;
+import com.api.gobooking.user.appuser.AppUserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +21,25 @@ public class PropertyController {
         return propertyService.getProperties();
     }
 
+
+    @GetMapping(path = "sort_by_rating")
+    public List<PropertyResponse> getPropertiesSortByRating(){
+        return propertyService.getPropertiesSort(1);
+    }
+
+    @GetMapping(path = "sort_by_date")
+    public List<PropertyResponse> getPropertiesSortByDate(){
+        return propertyService.getPropertiesSort(2);
+    }
+
+    @GetMapping(path = "sort_by_booked")
+    public List<PropertyResponse> getPropertiesSortByBooked(){
+        return propertyService.getPropertiesSort(3);
+
     @GetMapping(path = "doesownerhaveproperty/{propertyId}")
     public boolean doesOwnerHaveProperty(@PathVariable(name = "propertyId") int propertyId){
         return propertyService.propertyExistsbyOwnerId(propertyId);
+
     }
 
     @GetMapping(path = "{propertyId}")
@@ -51,9 +69,16 @@ public class PropertyController {
         propertyService.addProperty(propertyRequest);
     }
 
+
+    @GetMapping(path = "count_property={mode}")
+    public List<DoubleTimeData> countProperty(@PathVariable("mode") Integer mode){
+        return propertyService.countProperty(mode);
+    }
+
     @PutMapping(path = "update_rating/{property_id}")
     public void updateRating(@PathVariable("property_id") Integer property_id, @RequestParam Double rating){
         propertyService.updateRating(property_id, rating);
     }
+
 
 }

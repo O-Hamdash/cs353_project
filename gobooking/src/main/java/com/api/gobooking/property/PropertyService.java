@@ -1,6 +1,6 @@
 package com.api.gobooking.property;
 
-
+import com.api.gobooking.http.DoubleTimeData;
 import com.api.gobooking.user.UserService;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.AllArgsConstructor;
@@ -87,6 +87,15 @@ public class PropertyService {
         property.setStatus(status);
 
         propertyRepository.updateProperty(property);
+    }
+
+
+    public List<PropertyResponse> getPropertiesSort(Integer sortMode) {
+        return propertyRepository.getPropertiesSort(sortMode);
+    }
+
+    public List<DoubleTimeData> countProperty(Integer mode) {
+        return propertyRepository.countProperty(mode);
     }
 
     public boolean updateRating(Integer id, Double rating){

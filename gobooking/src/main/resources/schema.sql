@@ -112,6 +112,17 @@ CREATE TABLE review
         ON DELETE CASCADE
 );
 
+CREATE TABLE likes
+(
+    review_id   int   NOT NULL,
+    user_id   int     NOT NULL,
+    PRIMARY KEY (review_id, user_id),
+    FOREIGN KEY (review_id) references review (review_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES app_user (user_id)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE pays
 (
     booking_id   int      NOT NULL,
@@ -168,7 +179,7 @@ ALTER TABLE service ADD CONSTRAINT check_services
 
 -- valid_booking_status assertion becomes a constraint postgresql
 ALTER TABLE booking ADD CONSTRAINT valid_booking_status
-    CHECK ( status IN ('blocked', 'booked', 'available'));
+    CHECK ( status IN ('blocked', 'booked', 'available', 'completed'));
 
 
 

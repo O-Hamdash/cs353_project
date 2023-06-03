@@ -1,14 +1,16 @@
 package com.api.gobooking.review;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import com.api.gobooking.http.TimeData;
+import com.api.gobooking.http.TimeDataDouble;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,15 +80,30 @@ public class ReviewRepository {
     }
 
     @Transactional
-    public void updateLikes(Integer id, Integer likes){
+    public void updateLikes(Integer reviewId, Integer reviewerId, Integer likes, int mode){
         String sql = "UPDATE review " +
                 "SET likes = :likes " +
                 "WHERE review_id = :review_id";
 
         Query query = entityManager.createNativeQuery(sql);
 
-        query.setParameter("review_id", id);
+        query.setParameter("review_id", reviewId);
         query.setParameter("likes", likes);
+
+        query.executeUpdate();
+
+        if (mode == 1){
+            sql = "INSERT INTO likes (review_id, user_id) " +
+                    "VALUES (:review_id, :user_id)";
+        } else if (mode == 2){
+            sql = "DELETE FROM likes " +
+                    "WHERE review_id = :review_id AND user_id = :user_id";
+        }
+
+        query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("review_id", reviewId);
+        query.setParameter("user_id", reviewerId);
 
         query.executeUpdate();
     }
@@ -107,4 +124,108 @@ public class ReviewRepository {
         query.executeUpdate();
     }
 
+    public BigDecimal getReviewFromProperty(Integer propertyId) {
+        String sql = "SELECT AVG(rating) AS average_rating " +
+                "FROM review " +
+                "WHERE booking_id IN ( " +
+                "    SELECT booking_id " +
+                "    FROM booking " +
+                "    WHERE property_id = :property_id " +
+                ");";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("property_id", propertyId);
+
+        BigDecimal averageRating = null;
+        try {
+            averageRating = (BigDecimal) query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new IllegalStateException("no reviews found for this property");
+        }
+
+        return averageRating;
+    }
+
+    // SortMode is 0 for sort by rating, 1 for sort by likes, and 2 for date
+    public List<Review> getReviewsByProperty(Integer propertyId, Integer sortMode) {
+        String sql = "select * from review where booking_id in (" +
+                "select booking_id from booking where property_id = :property_id) " +
+                "order by ";
+
+        if (sortMode == 1){
+            sql = sql + "likes desc";
+        } else if (sortMode == 2){
+            sql = sql + "review_date desc";
+        } else {
+            sql = sql + "rating desc";
+        }
+
+        Query query = entityManager.createNativeQuery(sql, Review.class);
+
+        query.setParameter("property_id", propertyId);
+
+        return query.getResultList();
+    }
+
+    public List<TimeDataDouble> reviewAverageYear(Integer mode) {
+        Integer count = null;
+        String interval = null;
+        if (mode == 3){
+            count = 12;
+            interval = "month";
+        }else if (mode == 2){
+            count = 30;
+            interval = "day";
+        }else if (mode == 1){
+            count = 7;
+            interval = "day";
+        }else if (mode == 4){
+            count = 5;
+            interval = "year";
+        }
+
+        List<TimeDataDouble> result = new ArrayList<>();
+
+        ArrayList<String> times = new ArrayList<>();
+        times.add("today");
+        times.add("1");
+        for (int i = 2; i < count; i++) {
+            times.add(String.format("%s", i));
+        }
+
+        String sql;
+        Query query = null;
+        TimeDataDouble timeData;
+        Double number;
+        String s = "SELECT COALESCE(avg(rating), 0) AS avg_rating FROM review WHERE review_date < CURRENT_DATE - INTERVAL '%s %s'";
+        for (int i = count - 1; i >= 0; i--){
+            sql = String.format(s, i, interval);
+
+            query = entityManager.createNativeQuery(sql);
+
+            number = ((Number) query.getSingleResult()).doubleValue();
+            timeData = new TimeDataDouble(times.get(i), number);
+
+            result.add(timeData);
+        }
+
+        return result;
+    }
+
+    public Boolean isLiked(Integer reviewId, Integer userId) {
+        String sql = "SELECT EXISTS ( " +
+                "    SELECT 1 " +
+                "    FROM likes " +
+                "    WHERE review_id = :review_id " +
+                "        AND user_id = :user_id " +
+                ")";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("review_id", reviewId);
+        query.setParameter("user_id", userId);
+
+        return (Boolean) query.getSingleResult();
+    }
 }

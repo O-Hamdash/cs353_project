@@ -27,7 +27,9 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 
-@PrimaryKeyJoinColumn(name = "id")
+
+@PrimaryKeyJoinColumn(name = "property_id")
+
 public class Property {
     @Id
     @Column(name = "property_id")

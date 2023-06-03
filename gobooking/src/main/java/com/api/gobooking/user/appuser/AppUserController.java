@@ -1,14 +1,13 @@
 package com.api.gobooking.user.appuser;
 
 
-import jakarta.transaction.Transactional;
+import com.api.gobooking.http.NameValueResponse;
+import com.api.gobooking.http.TimeData;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -81,5 +80,15 @@ public class AppUserController {
     @PutMapping(path="update_tax_number/{appUserId}")
     public void updateTaxNumber(@PathVariable("appUserId") Integer appUserId, @RequestParam String taxNumber){
         appUserService.updateTaxNumber(appUserId, taxNumber);
+    }
+
+    @GetMapping(path = "top_user_location")
+    public List<NameValueResponse> topUserLocation(){
+        return appUserService.topUserLocation();
+    }
+
+    @GetMapping(path = "count_users={mode}")
+    public List<TimeData> countUsersYear(@PathVariable("mode") Integer mode){
+        return appUserService.countUsers(mode);
     }
 }
