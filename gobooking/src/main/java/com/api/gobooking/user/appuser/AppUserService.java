@@ -137,6 +137,22 @@ public class AppUserService {
         return true;
     }
 
+    public boolean addToBalance(Integer id, Double balance){
+        boolean success = false;
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
+
+        if (optionalAppUser.isEmpty()){
+            throw new IllegalStateException(String.format("addToBalance: AppUser with id (%s) does not exist", id));
+        }
+
+        AppUser appUser = optionalAppUser.get();
+
+        appUserRepository.updateBalance(id, appUser.getBalance() + balance);
+
+        success = true;
+        return success;
+    }
+
     public boolean updateCity(Integer id, String city){
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
 

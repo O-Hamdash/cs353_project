@@ -138,6 +138,19 @@ public class AppUserRepository {
 
         query.executeUpdate();
     }
+    @Transactional
+    public void addToBalance(Integer id, Double balance) {
+        String sql = "UPDATE app_user " +
+                "SET balance = balance + :balance " +
+                "WHERE user_id = :id";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+        query.setParameter("balance", balance);
+
+        query.executeUpdate();
+    }
 
     @Transactional
     public void updateCity(Integer id, String city){

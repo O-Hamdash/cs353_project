@@ -30,6 +30,8 @@ CREATE TABLE admin
         ON DELETE CASCADE
 );
 
+
+
 CREATE TABLE app_user
 (
     user_id                int       NOT NULL,
@@ -62,8 +64,19 @@ CREATE TABLE property
     neighborhood    varchar(255)       NOT NULL,
     building_no     int                 NOT NULL,
     apartment_no    int                 NOT NULL,
+    rating          double precision,
     floor           int                 NOT NULL,
     added_date      timestamp          NOT NULL,
+    wifi            boolean,
+    kitchen         boolean,
+    furnished       boolean,
+    parking         boolean,
+    ac              boolean,
+    rating          double precision,
+    start_date      timestamp,
+    end_date        timestamp,
+    elevator        boolean,
+    fire_alarm      boolean,
     FOREIGN KEY (owner_id) REFERENCES "user" (user_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
@@ -120,16 +133,6 @@ CREATE TABLE pays
         ON DELETE CASCADE
 );
 
-CREATE TABLE service
-(
-    property_id  int    NOT NULL,
-    service_name varchar(255)   NOT NULL,
-    PRIMARY KEY (property_id, service_name),
-    FOREIGN KEY (property_id) REFERENCES property
-        ON DELETE CASCADE
-);
-
-
 -- Assertions & additional constraints
 -- no Assertion in PostgreSQL, use Rule instead
 
@@ -166,7 +169,6 @@ ALTER TABLE "user" ADD CONSTRAINT unique_user_email UNIQUE (email);
 ALTER TABLE review ADD CONSTRAINT unique_review_per_booking UNIQUE (booking_id, reviewer_id);
 
 -- unique_property_owner assertion becomes a constraint in PostgreSQL
-ALTER TABLE property ADD CONSTRAINT unique_property_owner UNIQUE (owner_id);
 
 -- check_services assertion becomes a constraint in PostgreSQL
 ALTER TABLE service ADD CONSTRAINT check_services

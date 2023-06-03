@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("gobooking/bookings")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class BookingController {
 
     private BookingService bookingService;
@@ -22,11 +23,17 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<String> createBooking(@RequestBody Booking booking) {
-        boolean created = bookingService.createBooking(booking);
-        if (created) {
+        int created = bookingService.createBooking(booking);
+        if (created==0) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Booking created successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Booking Creation failed because of constraints violation");
+        }
+        else if(created==2) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User Do Not Have Enough Money");
+        }
+        else{
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Unsuccessful Insertion!");
+
         }
     }
 
@@ -72,6 +79,11 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(bookings);
     }
 
+    @GetMapping("/pastBookings/{bookerId}")
+    public ResponseEntity<List<Booking>> getPastBookingsByBookerId(@PathVariable int bookerId) {
+        List<Booking> pastBookings = bookingService.findPastBookingsByBookerId(bookerId);
+        return ResponseEntity.status(HttpStatus.OK).body(pastBookings);
+    }
 
 
     @GetMapping
