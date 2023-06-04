@@ -26,6 +26,8 @@ public class UserController {
         return userService.getUser(userId);
     }
 
+    @GetMapping(path = "/email/{email}")
+    public User getUserByEmail(@PathVariable(name = "email") String email){return userService.getUserByEmail(email);}
     @PostMapping("/login")
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
