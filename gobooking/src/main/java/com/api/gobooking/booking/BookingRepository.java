@@ -2,6 +2,8 @@ package com.api.gobooking.booking;
 
 import com.api.gobooking.http.NameValueResponse;
 import com.api.gobooking.http.StayingData;
+import com.api.gobooking.http.TimeData;
+import com.api.gobooking.http.TransactionsData;
 import com.api.gobooking.user.UserRepository;
 import com.api.gobooking.user.appuser.AppUser;
 import jakarta.persistence.EntityManager;
@@ -13,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.awt.desktop.QuitEvent;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -161,5 +164,50 @@ public class BookingRepository {
         Query query = entityManager.createNativeQuery(sql, StayingData.class);
 
         return query.getResultList();
+    }
+
+    public List<TransactionsData> getTransactionsData(Integer mode) {
+        Integer count = null;
+        String interval = null;
+        if (mode == 3){
+            count = 12;
+            interval = "month";
+        }else if (mode == 2){
+            count = 30;
+            interval = "day";
+        }else if (mode == 1){
+            count = 7;
+            interval = "day";
+        }else if (mode == 4){
+            count = 5;
+            interval = "year";
+        }
+
+        List<TransactionsData> result = new ArrayList<>();
+
+        ArrayList<String> times = new ArrayList<>();
+        times.add("today");
+        times.add("1");
+        for (int i = 2; i < count; i++) {
+            times.add(String.format("%s", i));
+        }
+
+        String sql;
+        Query query = null;
+        TransactionsData transactionsData;
+        Double number;
+        String s = "SELECT COALESCE(sum(total_price), 0) AS avg_price FROM booking WHERE end_date < CURRENT_DATE - INTERVAL '%s %s' AND status = 'completed'";
+        for (int i = count - 1; i >= 0; i--){
+            sql = String.format(s, i, interval);
+
+            query = entityManager.createNativeQuery(sql);
+
+            number = ((Number) query.getSingleResult()).doubleValue();
+            transactionsData = new TransactionsData(times.get(i), number);
+
+            result.add(transactionsData);
+        }
+
+        return result;
     }
 }

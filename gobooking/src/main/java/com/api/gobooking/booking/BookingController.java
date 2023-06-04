@@ -2,6 +2,7 @@ package com.api.gobooking.booking;
 
 import com.api.gobooking.http.NameValueResponse;
 import com.api.gobooking.http.StayingData;
+import com.api.gobooking.http.TransactionsData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,5 +101,10 @@ public class BookingController {
     @GetMapping(path = "staying_data")
     public List<StayingData> getStayingData(){
         return bookingService.getStayingData();
+    }
+
+    @GetMapping(path = "transactions={mode}")
+    public List<TransactionsData> getTransactionsData(@PathVariable("mode") Integer mode){
+        return bookingService.getTransactionsData(mode);
     }
 }
