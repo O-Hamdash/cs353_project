@@ -228,4 +228,14 @@ public class ReviewRepository {
 
         return (Boolean) query.getSingleResult();
     }
+
+    public Review getReviewByBooking(Integer bookingId) {
+        String sql = "select * from review where booking_id = :booking_id";
+
+        Query query = entityManager.createNativeQuery(sql, Review.class);
+
+        query.setParameter("booking_id", bookingId);
+
+        return (Review) query.getSingleResult();
+    }
 }

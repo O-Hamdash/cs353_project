@@ -26,6 +26,11 @@ public class ReviewController {
     }
 
 
+    @GetMapping(path = "by_booking/{booking_id}")
+    public Review getReviewByBooking(@PathVariable("booking_id") Integer bookingId){
+        return reviewService.getReviewByBooking(bookingId);
+    }
+
     // SortMode is 0 for sort by rating
     @GetMapping(path = "by_property_sort_rating/{property_id}")
     public List<Review> getReviewsByPropertySortByRating(@PathVariable("property_id") Integer property_id){

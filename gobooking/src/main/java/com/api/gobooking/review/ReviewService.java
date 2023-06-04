@@ -139,4 +139,8 @@ public class ReviewService {
     public Boolean isLiked(Integer reviewId, Integer userId) {
         return reviewRepository.isLiked(reviewId, userId);
     }
+
+    public Review getReviewByBooking(Integer bookingId) {
+        return reviewRepository.getReviewByBooking(bookingId);
+    }
 }
