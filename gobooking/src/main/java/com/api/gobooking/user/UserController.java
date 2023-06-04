@@ -32,13 +32,16 @@ public class UserController {
                         HttpSession session){
 
         // Perform authentication logic here, such as validating username and password
-        if (userService.getUserByEmail(email) != null && userService.getUserByEmail(email).getPassword().equals(password)) {
+        if (userService.getUserByEmail(email) != null && userService.passwordMatches(password,
+                                                        userService.getUserByEmail(email).getPassword())
+                ) {
             // Authentication successful, set user information in session
             session.setAttribute("userId", userService.getUserByEmail(email).getId());
-            return "redirect:/home";
+            if(userService.getUserByEmail(email).getRole() == Role.ADMIN){ return "redirect:/admin_dashboard";}
+            else{return  "redirect:/home";}
         } else {
             // Authentication failed, redirect back to login page with an error message
-            return "redirect:/login?error";
+            return "redirect:/login";
         }
     }
 
