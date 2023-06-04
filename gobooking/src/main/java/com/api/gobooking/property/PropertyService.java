@@ -47,6 +47,11 @@ public class PropertyService {
         return propertyRepository.findByPropertyOwnerId(id);
     }
 
+    public List<Property> getPropertyByFiltering(String city, Integer max_people, PropertyType type, Integer filterType){
+
+        return propertyRepository.findByFiltering(city, max_people, type, filterType);
+    }
+
     public boolean addProperty(PropertyRequest propertyRequest){
         boolean success = false;
         Property property = new Property(propertyRequest);

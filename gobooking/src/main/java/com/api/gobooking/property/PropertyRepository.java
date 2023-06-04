@@ -132,6 +132,38 @@ public class PropertyRepository {
         return query.getResultList();
     }
 
+    public List<Property> findByFiltering(String city, Integer max_people, PropertyType type, Integer filterType){
+        String jpql = "";
+        TypedQuery<Property> query = null;
+        if (filterType == 0) {
+            jpql = "SELECT p FROM Property p WHERE p.city = :city AND p.max_people = :max_people AND p.type = :type";
+            query = entityManager.createQuery(jpql, Property.class);
+            query.setParameter("city", city);
+            query.setParameter("max_people", max_people);
+            query.setParameter("type", type);
+        }
+        else if (filterType == 1) {
+            jpql = "SELECT p FROM Property p WHERE p.city = :city AND p.max_people = :max_people";
+            query = entityManager.createQuery(jpql, Property.class);
+            query.setParameter("city", city);
+            query.setParameter("max_people", max_people);
+        }
+        else if (filterType == 2) {
+            jpql = "SELECT p FROM Property p WHERE p.max_people = :max_people AND p.type = :type";
+            query = entityManager.createQuery(jpql, Property.class);
+            query.setParameter("max_people", max_people);
+            query.setParameter("type", type);
+        }
+        else if (filterType == 3) {
+            jpql = "SELECT p FROM Property p WHERE p.max_people = :max_people";
+            query = entityManager.createQuery(jpql, Property.class);
+            query.setParameter("max_people", max_people);
+        }
+
+        List<Property> resultList = query.getResultList();
+        return query.getResultList();
+    }
+
     public boolean isPropertyExistByOwnerId(Integer id){
         boolean result = true;
         String jpql = "SELECT p FROM Property p WHERE p.owner_id = :id";
