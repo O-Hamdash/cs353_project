@@ -198,8 +198,8 @@ CREATE OR REPLACE FUNCTION update_balances()
 BEGIN
     -- Deduct booking cost from travelers' balance
     UPDATE app_user
-    SET balance = balance - (SELECT cost
-                             FROM pays
+    SET balance = balance - (SELECT total_price
+                             FROM booking
                              WHERE booking_id = NEW.booking_id)
     WHERE user_id = NEW.booker_id;
 

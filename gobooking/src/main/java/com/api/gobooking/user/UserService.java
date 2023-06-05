@@ -40,7 +40,7 @@ public class UserService {
     }
     public User getUserByEmail(String email){
         if (!userExists(email)){
-            throw new IllegalStateException(String.format("getUser: user with email (%s) does not exist", email));
+            return null;
         }
         return userRepository.findByEmail(email).get();
     }
